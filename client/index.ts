@@ -3,6 +3,8 @@ import { Component, InjectionKey } from 'vue'
 import { ElScrollbar } from 'element-plus'
 import VPDoc from '@theme-default/components/VPDoc.vue'
 import Badge from './components/badge.vue'
+import ChatMessage from './components/chat-message.vue'
+import PanelView from './components/chat-panel.vue'
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 
@@ -24,6 +26,8 @@ export const defineTheme = (config: ClientConfig = {}): Theme => ({
   enhanceApp({ app }) {
     app.use(ElScrollbar)
     app.component('Badge', Badge)
+    app.component('ChatMessage', ChatMessage)
+    app.component('ChatPanel', PanelView)
     app.provide(ClientConfig, {
       layouts: {
         ...config.layouts,
