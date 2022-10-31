@@ -39,6 +39,9 @@
     "vitepress": "^1",
     "vue": "^3"
   },
+  "dependencies": {
+    "element-plus": "2.2.17"
+  },
   "yakumo": {
     "client": false
   }

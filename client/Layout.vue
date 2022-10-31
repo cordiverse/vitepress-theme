@@ -1,5 +1,5 @@
 <template>
-  <div class="Layout">
+  <ElScrollbar class="Layout">
     <VPSkipLink />
     <VPBackdrop class="backdrop" :show="isSidebarOpen" @click="closeSidebar" />
     <VPNav>
@@ -30,7 +30,7 @@
     </div>
 
     <VPFooter />
-  </div>
+  </ElScrollbar>
 </template>
 
 <script setup lang="ts">
@@ -43,8 +43,8 @@ import VPSkipLink from '@theme-default/components/VPSkipLink.vue'
 import VPBackdrop from '@theme-default/components/VPBackdrop.vue'
 import VPNav from '@theme-default/components/VPNav.vue'
 import VPLocalNav from '@theme-default/components/VPLocalNav.vue'
-import VPSidebar from '@theme-default/components/VPSidebar.vue'
 import VPFooter from '@theme-default/components/VPFooter.vue'
+import VPSidebar from './components/sidebar.vue'
 import { ClientConfig } from '.'
 
 const {
@@ -82,7 +82,7 @@ const contentClass = computed(() => ({
 .Layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .VPContent {

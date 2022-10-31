@@ -4,6 +4,7 @@
     "jsx": "preserve",
     "types": [
       "vite/client",
+      "element-plus/global",
     ],
   },
   "include": [

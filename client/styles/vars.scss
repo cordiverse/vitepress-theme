@@ -56,3 +56,7 @@
 .dark .vp-doc .custom-block a {
   transition: color 0.25s;
 }
+
+.el-scrollbar__bar {
+  z-index: 50;
+}

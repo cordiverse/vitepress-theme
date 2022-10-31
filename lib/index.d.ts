@@ -1,2 +1,4 @@
 import { DefaultTheme, UserConfig } from 'vitepress';
-export declare const defineConfig: (config: UserConfig<DefaultTheme.Config>) => UserConfig<DefaultTheme.Config>;
+export interface ThemeConfig extends DefaultTheme.Config {
+}
+export declare const defineConfig: (config: UserConfig<ThemeConfig>) => Promise<UserConfig<ThemeConfig>>;
