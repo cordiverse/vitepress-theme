@@ -1,0 +1,45 @@
+{
+  "name": "@koishijs/vitepress-theme",
+  "description": "VitePress theme for Koishi projects",
+  "version": "1.0.0",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": {
+      "node": "./lib/index.js",
+      "browser": "./client/index.ts",
+      "typings": "./index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "author": "Shigma <shigma10826@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koishijs/vitepress-theme.git"
+  },
+  "bugs": {
+    "url": "https://github.com/koishijs/vitepress-theme/issues"
+  },
+  "homepage": "https://koishi.chat/",
+  "keywords": [
+    "vitepress",
+    "theme"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "devDependencies": {
+    "@types/node": "^18.6.4",
+    "typescript": "^4.8.2"
+  },
+  "peerDependencies": {
+    "vitepress": "^1",
+    "vue": "^3"
+  },
+  "yakumo": {
+    "client": false
+  }
+}

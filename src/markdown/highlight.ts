@@ -1,5 +1,6 @@
 // modified from https://github.com/vuejs/vitepress/blob/283407d072353a77ee0939a71a1f2a35e953eb7d/src/node/markdown/plugins/highlight.ts
-import { IThemeRegistration, getHighlighter, HtmlRendererOptions } from 'shiki'
+
+import { getHighlighter, HtmlRendererOptions, IThemeRegistration } from 'shiki'
 import MarkdownIt from 'markdown-it'
 
 /**
@@ -21,7 +22,7 @@ const attrsToLines = (attrs: string): HtmlRendererOptions['lineOptions'] => {
     .forEach(([start, end]) => {
       if (start && end) {
         result.push(
-          ...Array.from({ length: end - start + 1 }, (_, i) => start + i)
+          ...Array.from({ length: end - start + 1 }, (_, i) => start + i),
         )
       } else {
         result.push(start)
@@ -29,7 +30,7 @@ const attrsToLines = (attrs: string): HtmlRendererOptions['lineOptions'] => {
     })
   return result.map((v) => ({
     line: v,
-    classes: ['highlighted']
+    classes: ['highlighted'],
   }))
 }
 
