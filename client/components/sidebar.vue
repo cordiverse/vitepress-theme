@@ -99,18 +99,21 @@ watchPostEffect(async () => {
 .vp-sidebar-nav {
   outline: 0;
 }
+
 .vp-sidebar-group + .vp-sidebar-group {
-  margin-top: 32px;
+  margin-top: 16px;
   border-top: 1px solid var(--vp-c-divider-light);
-  padding-top: 10px;
+  padding-top: 16px;
 }
+
 @media (min-width: 960px) {
   .vp-sidebar-group {
-    padding-top: 10px;
+    padding-top: 16px;
     width: calc(var(--vp-sidebar-width) - 64px);
   }
   .vp-sidebar-group + .vp-sidebar-group {
-    margin-top: 24px;
+    margin-top: 16px;
   }
 }
+
 </style>

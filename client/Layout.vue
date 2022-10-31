@@ -1,5 +1,5 @@
 <template>
-  <ElScrollbar class="Layout">
+  <div class="Layout">
     <VPSkipLink />
     <VPBackdrop class="backdrop" :show="isSidebarOpen" @click="closeSidebar" />
     <VPNav>
@@ -30,7 +30,7 @@
     </div>
 
     <VPFooter />
-  </ElScrollbar>
+  </div>
 </template>
 
 <script setup lang="ts">

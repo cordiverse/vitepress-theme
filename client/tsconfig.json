@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "rootDir": ".",
+    "target": "esnext",
+    "moduleResolution": "node",
     "jsx": "preserve",
     "types": [
       "vite/client",
