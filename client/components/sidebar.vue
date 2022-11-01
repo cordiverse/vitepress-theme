@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watchPostEffect, nextTick } from 'vue'
+import { nextTick, ref, watchPostEffect } from 'vue'
 // @ts-ignore
 import { useSidebar } from '@theme-default/composables/sidebar.js'
 import VPSidebarGroup from '@theme-default/components/VPSidebarGroup.vue'
@@ -47,7 +47,8 @@ watchPostEffect(async () => {
 <style lang="scss">
 .vp-sidebar {
   position: fixed !important;
-  top: 0;
+  padding: 0 32px;
+  top: var(--vp-layout-top-height, 0px);
   bottom: 0;
   left: 0;
   z-index: var(--vp-z-index-sidebar);
@@ -62,7 +63,7 @@ watchPostEffect(async () => {
   transition: opacity 0.5s, transform 0.25s ease;
 }
 .vp-sidebar-view {
-  padding: 32px 32px 64px;
+  padding: 32px 0 64px;
 }
 .vp-sidebar.open {
   opacity: 1;

@@ -152,6 +152,7 @@ $msgbox-left: 4.2rem;
   border-radius: 0.5rem;
   background-color: var(--vp-c-bg);
   word-break: break-all;
+  line-height: 26px !important;
 
   .chat-message:not(.no-padding) & {
     padding: 0.5rem 0.7rem;
@@ -185,6 +186,7 @@ $msgbox-left: 4.2rem;
 
   p {
     margin: 0 !important;
+    line-height: 26px !important;
   }
 
   blockquote {
