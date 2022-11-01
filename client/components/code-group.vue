@@ -2,10 +2,10 @@
   <div class="code-group">
     <div class="header">
       <span
-        v-for="key in keys"
+        v-for="(_, key) in slots"
         :key="key"
         :class="{ active: active === key }"
-        @click="active = key"
+        @click="setActive(key)"
       >{{ key }}</span>
     </div>
     <slot :name="active"></slot>
@@ -14,12 +14,21 @@
 
 <script lang="ts" setup>
 
-import { computed, ref, useSlots } from 'vue'
+import { computed, inject, useSlots } from 'vue'
+import { ClientConfig } from '..'
 
 const slots = useSlots()
-const keys = computed(() => Object.keys(slots))
 
-const active = ref(keys.value[0])
+const config = inject(ClientConfig)
+const active = computed(() => {
+  return config.languages.find(lang => lang in slots) || Object.keys(slots)[0]
+})
+
+function setActive(lang: any) {
+  const index = config.languages.indexOf(lang)
+  if (index >= 0) config.languages.splice(index, 1)
+  config.languages.unshift(lang)
+}
 
 </script>
 

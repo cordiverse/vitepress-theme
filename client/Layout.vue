@@ -45,7 +45,7 @@ import VPNav from '@theme-default/components/VPNav.vue'
 import VPLocalNav from '@theme-default/components/VPLocalNav.vue'
 import VPFooter from '@theme-default/components/VPFooter.vue'
 import VPSidebar from './components/sidebar.vue'
-import { ClientConfig } from '.'
+import { ThemeConfig } from '.'
 
 const {
   isOpen: isSidebarOpen,
@@ -63,7 +63,7 @@ provide('close-sidebar', closeSidebar)
 
 const { frontmatter } = useData()
 
-const config = inject(ClientConfig)
+const config = inject(ThemeConfig)
 
 const NotFound = inject('NotFound')
 const component = computed(() => {
