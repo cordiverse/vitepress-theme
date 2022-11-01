@@ -2,6 +2,7 @@ import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { slugify } from '@mdit-vue/shared'
+import container from './markdown/container'
 import highlight from './markdown/highlight'
 import fence from './markdown/fence'
 
@@ -19,6 +20,15 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
     },
     config(md) {
       md.use(fence)
+      md.use(container, {
+        type: 'code-group',
+        before() {
+          return `<code-group>`
+        },
+        after() {
+          return '</code-group>'
+        },
+      })
       config?.markdown?.config?.(md)
     },
   },
