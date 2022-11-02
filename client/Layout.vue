@@ -1,5 +1,5 @@
 <template>
-  <div class="Layout">
+  <div class="Layout" :class="layoutClass">
     <VPSkipLink />
     <VPBackdrop class="backdrop" :show="isSidebarOpen" @click="closeSidebar" />
     <VPNav>
@@ -72,6 +72,9 @@ const component = computed(() => {
 
 const contentClass = computed(() => ({
   'has-sidebar': hasSidebar.value,
+}))
+
+const layoutClass = computed(() => ({
   [`layout-${frontmatter.value.layout}`]: frontmatter.value.layout,
 }))
 

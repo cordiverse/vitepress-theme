@@ -1,11 +1,12 @@
 {
-  "name": "@koishijs/vitepress-theme",
+  "name": "@koishijs/vitepress",
   "description": "VitePress theme for Koishi projects",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "client"
   ],
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
@@ -33,6 +34,8 @@
     "vue": "^3"
   },
   "dependencies": {
-    "element-plus": "2.2.17"
+    "@mdit-vue/shared": "^0.11.0",
+    "element-plus": "2.2.17",
+    "markdown-it-container": "^3.0.0"
   }
 }
