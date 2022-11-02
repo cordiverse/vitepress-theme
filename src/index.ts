@@ -1,7 +1,7 @@
 import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
-import { slugify } from '@mdit-vue/shared'
+import { htmlEscape, slugify } from '@mdit-vue/shared'
 import container from './markdown/container'
 import highlight from './markdown/highlight'
 import fence from './markdown/fence'
@@ -21,13 +21,22 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
     config(md) {
       md.use(fence)
       md.use(container, {
-        type: 'code-group',
-        before() {
-          return `<code-group>`
+        type: 'tabs',
+        before: info => `<tab-select class="${info}">`,
+        after: () => '</tab-select>',
+      })
+      md.use(container, {
+        type: 'tab',
+        before(info) {
+          const name = info.split(/\s+/, 1)[0]
+          const title = info.slice(name.length).trim()
+          let result = `<template #tab-${name}>`
+          if (title) {
+            result = `<template #title-${name}>${htmlEscape(title)}</template>` + result
+          }
+          return result
         },
-        after() {
-          return '</code-group>'
-        },
+        after: () => '</template>',
       })
       config?.markdown?.config?.(md)
     },

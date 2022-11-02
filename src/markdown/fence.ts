@@ -1,3 +1,4 @@
+import { htmlEscape } from '@mdit-vue/shared'
 import MarkdownIt from 'markdown-it'
 
 export default (md: MarkdownIt) => {
@@ -5,20 +6,23 @@ export default (md: MarkdownIt) => {
   md.renderer.rules.fence = (...args) => {
     let [tokens, index] = args
     const token = tokens[index]
-    let prev: any, title = token.info
-    const rawCode = fence(...args).replace(/<span class="lang">(.+?)<\/span>/, ($0, $1: string) => {
-      const segments = $1.split(/\s+/)
-      title = segments[0]
-      for (const text of segments.slice(1)) {
-        if (text.startsWith('title=')) {
-          title = text.slice(6)
-        }
+    let prev: any, title: string
+    const [language, ...rest] = token.info.split(/\s+/g)
+    for (const text of rest) {
+      if (text.startsWith('title=')) {
+        title = text.slice(6)
       }
-      return `<span class="lang">${title}</span>`
+    }
+    const rawCode = fence(...args).replace(/<span class="lang">(.+?)<\/span>/, () => {
+      return `<span class="lang">${title || language}</span>`
     })
     while ((prev = tokens[--index])?.type === 'fence');
-    const isCodeGroupItem = prev?.type === 'container_code-group_open'
+    const isCodeGroupItem = prev?.type === 'container_select_open'
     if (!isCodeGroupItem) return rawCode
-    return `<template #${title}>${rawCode}</template>`
+    let result = `<template #tab-${language}>${rawCode}</template>`
+    if (title) {
+      result = `<template #title-${language}>${htmlEscape(title)}</template>` + result
+    }
+    return result
   }
 }

@@ -6,7 +6,7 @@ import VPDoc from '@theme-default/components/VPDoc.vue'
 import Badge from './components/badge.vue'
 import ChatMessage from './components/chat-message.vue'
 import PanelView from './components/chat-panel.vue'
-import CodeGroup from './components/code-group.vue'
+import TabSelect from './components/tab-select.vue'
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 
@@ -26,7 +26,7 @@ export interface ThemeConfig {
 
 export interface ClientConfig {
   version?: number
-  languages?: string[]
+  tabs?: string[]
 }
 
 const version = 1
@@ -49,7 +49,7 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
     app.component('Badge', Badge)
     app.component('ChatMessage', ChatMessage)
     app.component('ChatPanel', PanelView)
-    app.component('CodeGroup', CodeGroup)
+    app.component('TabSelect', TabSelect)
 
     app.provide(ThemeConfig, {
       layouts: {
@@ -59,7 +59,7 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
     })
 
     app.provide(ClientConfig, createStorage({
-      languages: [],
+      tabs: [],
     }))
   },
 })
