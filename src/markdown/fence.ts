@@ -17,7 +17,7 @@ export default (md: MarkdownIt) => {
       return `<span class="lang">${title || language}</span>`
     })
     while ((prev = tokens[--index])?.type === 'fence');
-    const isCodeGroupItem = prev?.type === 'container_select_open'
+    const isCodeGroupItem = prev?.type === 'container_tabs_open'
     if (!isCodeGroupItem) return rawCode
     let result = `<template #tab-${language}>${rawCode}</template>`
     if (title) {
