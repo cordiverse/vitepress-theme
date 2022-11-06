@@ -30,6 +30,10 @@
     line-height: 1.7;
   }
 
+  div[class*='language-'] {
+    margin: 1rem 0;
+  }
+
   &::before {
     content: "!";
     position: absolute;

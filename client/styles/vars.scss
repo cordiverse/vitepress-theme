@@ -4,7 +4,7 @@
   --vp-c-brand-lighter: #7666CC;                        // 250 50 60
   --vp-c-brand-dark: #5545A1;                           // 250 40 45
   --vp-c-brand-darker: #524785;                         // 250 30 40
-  --vp-c-brand-dimm: #4A3D8F20;                         // 250 40 40
+  --vp-c-brand-dimm: #4A3D8F10;                         // 250 40 40
   --vp-c-brand: #5440BF;                                // 250 50 50
   --vp-c-brand-alt: #8F17E6;                            // 275 90 90
 }
@@ -15,26 +15,20 @@ html.dark {
   --vp-c-brand-lighter: #5440BF;                        // 250 50 50
   --vp-c-brand-dark: #A293EC;                           // 250 70 75
   --vp-c-brand-darker: #B4A8F0;                         // 250 70 80
-  --vp-c-brand-dimm: #B4A8F020;                         // 250 70 80
+  --vp-c-brand-dimm: #B4A8F010;                         // 250 70 80
   --vp-c-brand-alt: #C079F2;                            // 275 50 95
 }
 
 :root {
-  --vp-custom-block-tip-border: var(--vp-c-brand);
+  --vp-c-red-dimm-1: var(--vp-c-red-dark);
+  --vp-c-red-dimm-2: var(--vp-c-red-dark);
+  --vp-c-yellow-dimm-1: var(--vp-c-yellow-dark);
+  --vp-c-yellow-dimm-2: var(--vp-c-yellow-dark);
+
+  --vp-custom-block-tip-border: var(--vp-c-brand-light);
   --vp-custom-block-tip-text: var(--vp-c-brand-darker);
   --vp-custom-block-tip-bg: var(--vp-c-brand-dimm);
-  --vp-button-brand-bg: var(--vp-c-brand);
 
-  --vp-custom-block-warning-border: var(--vp-c-yellow-lighter);
-  --vp-custom-block-danger-border: var(--vp-c-red-lighter);
-}
-
-html.dark {
-  --vp-custom-block-warning-border: var(--vp-c-yellow-light);
-  --vp-custom-block-danger-border: var(--vp-c-red-light);
-}
-
-:root {
   --vp-badge-text: var(--vp-c-text-dark-1);
   --vp-badge-tip-bg: var(--vp-c-brand);
   --vp-badge-warning-bg: var(--el-color-warning);

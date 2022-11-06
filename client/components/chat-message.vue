@@ -145,7 +145,11 @@ $msgbox-left: 4.2rem;
   }
 }
 
-.message-box {
+.chat-message:not(.no-padding) .message-box {
+  padding: 0.5rem 0.7rem;
+}
+
+.chat-message .message-box {
   position: relative;
   margin-left: $msgbox-left;
   width: fit-content;
@@ -153,10 +157,6 @@ $msgbox-left: 4.2rem;
   background-color: var(--vp-c-bg);
   word-break: break-all;
   line-height: 26px !important;
-
-  .chat-message:not(.no-padding) & {
-    padding: 0.5rem 0.7rem;
-  }
 
   > img {
     border-radius: 0.5rem;
@@ -196,8 +196,8 @@ $msgbox-left: 4.2rem;
     border: none;
     border-radius: 0.5rem;
     padding: 0.2rem 0.6rem;
-    background-color: var(--vp-c-bg-light);
-    color: var(--c-text-lighter);
+    background-color: var(--vp-c-bg-alt);
+    color: var(--vp-c-text-2);
   }
 }
 

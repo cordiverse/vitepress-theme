@@ -20,7 +20,6 @@ export default {
   props: {
     controls: Boolean,
     title: String,
-    messages: Array,
   },
 
   data: () => ({
