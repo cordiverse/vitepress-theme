@@ -1,6 +1,7 @@
 .vp-doc {
   ol, ul {
     line-height: 1.75;
+    padding-left: 1.5rem;
   }
 
   li + li {
@@ -9,6 +10,10 @@
 
   th, td {
     padding: 0.6em 1em;
+  }
+
+  li > ol, li > ul {
+    margin-top: 0;
   }
 }
 
@@ -44,7 +49,7 @@
     height: 20px;
     border-radius: 100%;
     text-align: center;
-    line-height: 20px;
+    line-height: 21px;
     font-weight: 700;
     font-family: Dosis, Source Sans Pro, Helvetica Neue, Arial, sans-serif;
     font-size: 14px;
