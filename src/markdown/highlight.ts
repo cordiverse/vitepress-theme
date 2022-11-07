@@ -41,6 +41,20 @@ const alias = {
   docker: 'sh',
 }
 
+const tokens = {
+  '#ABB2BF': 'text',
+  '#E5C07B': 'constant',
+  '#D19A66': 'number',
+  '#98C379': 'string',
+  '#7F848E': 'comment',
+  '#C678DD': 'keyword',
+  '#E06C75': 'parameter',
+  '#61AFEF': 'function',
+  '#56B6C2': 'operator',
+}
+
+const colorRE = / style="color: ?(#[0-9a-fA-F]{6})"/g
+
 export default async function highlight(theme: string): Promise<MarkdownIt.Options['highlight']> {
   const getThemeName = (themeValue: IThemeRegistration) =>
     typeof themeValue === 'string' ? themeValue : themeValue.name
@@ -48,7 +62,6 @@ export default async function highlight(theme: string): Promise<MarkdownIt.Optio
   const highlighter = await getHighlighter({
     themes: [theme],
   })
-  const preRE = /^<pre.*?>/
   const vueRE = /-vue$/
 
   return (code: string, lang: string, attrs: string) => {
@@ -64,6 +77,10 @@ export default async function highlight(theme: string): Promise<MarkdownIt.Optio
 
     return highlighter
       .codeToHtml(code, { lang, lineOptions, theme: getThemeName(theme) })
-      .replace(preRE, `<pre ${vPre}>`)
+      .replace(/^<pre.*?>/, `<pre ${vPre}>`)
+      .replace(colorRE, (match, color) => {
+        const token = tokens[color.toUpperCase()]
+        return token ? ` style="color: var(--shiki-token-${token})"` : match
+      })
   }
 }
