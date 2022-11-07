@@ -47,6 +47,7 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
       alias: {
         '@theme-default': 'vitepress/dist/client/theme-default',
         '../composables/outline.js': resolve(__dirname, '../client/composables/outline'),
+        '../composables/prev-next.js': resolve(__dirname, '../client/composables/prev-next'),
       },
     },
   }, config?.vite || {}),
