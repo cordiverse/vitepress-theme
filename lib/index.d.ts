@@ -1,6 +1,6 @@
 import { DefaultTheme, UserConfig } from 'vitepress';
 export interface ThemeConfig extends Omit<DefaultTheme.Config, 'socialLinks'> {
-    socialLinks: ThemeConfig.SocialLink[];
+    socialLinks?: Record<string, string>;
 }
 export declare namespace ThemeConfig {
     interface SocialLink {
@@ -8,4 +8,4 @@ export declare namespace ThemeConfig {
         link: string;
     }
 }
-export declare const defineConfig: (config: UserConfig<ThemeConfig>) => Promise<UserConfig<ThemeConfig>>;
+export declare const defineConfig: (config: UserConfig<ThemeConfig>) => Promise<UserConfig>;

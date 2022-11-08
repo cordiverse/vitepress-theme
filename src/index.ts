@@ -7,7 +7,7 @@ import highlight from './markdown/highlight'
 import fence from './markdown/fence'
 
 export interface ThemeConfig extends Omit<DefaultTheme.Config, 'socialLinks'> {
-  socialLinks: ThemeConfig.SocialLink[]
+  socialLinks?: Record<string, string>
 }
 
 export namespace ThemeConfig {
@@ -17,8 +17,23 @@ export namespace ThemeConfig {
   }
 }
 
-export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig<ThemeConfig>> => ({
+export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig> => ({
   ...config,
+
+  themeConfig: {
+    outline: [2, 3],
+    ...config.themeConfig,
+
+    socialLinks: Object.entries({
+      github: `https://github.com/koishijs/${config.title}`,
+      ...config.themeConfig.socialLinks,
+    }).map(([icon, link]) => ({ icon, link })),
+
+    editLink: {
+      pattern: `https://github.com/koishijs/${config.title}/edit/master/docs/:path`,
+      ...config.themeConfig.editLink,
+    },
+  },
 
   markdown: {
     highlight: await highlight('one-dark-pro'),
