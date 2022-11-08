@@ -7,7 +7,7 @@
         :class="{ active: active === key }"
         @click="setActive(key)"
       >
-        <slot :name="'title-' + active">{{ key }}</slot>
+        <slot :name="'title-' + key">{{ key }}</slot>
       </span>
     </div>
     <slot :name="'tab-' + active"></slot>

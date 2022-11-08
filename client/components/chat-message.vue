@@ -21,14 +21,13 @@ const colorMap = {
 }
 
 const avatarMap = {
-  孤梦星影: '/avatar/satori.png',
-  四季酱: '/avatar/shiki.png',
-  Koishi: '/koishi.png',
+  Koishi: 'https://koishi.chat/logo.png',
 }
 
 const props = defineProps<{
   nickname?: string
   color?: string
+  avatar?: string
 }>()
 
 const shown = ref(false)
@@ -37,7 +36,7 @@ const moving = ref(false)
 const root = ref<HTMLElement>()
 
 const backgroundColor = computed(() => props.color || colorMap[props.nickname])
-const avatar = computed(() => props.nickname in avatarMap ? avatarMap[props.nickname] : '')
+const avatar = computed(() => props.avatar || avatarMap[props.nickname])
 
 function getPrevious() {
   let last: Element

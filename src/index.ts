@@ -6,7 +6,16 @@ import container from './markdown/container'
 import highlight from './markdown/highlight'
 import fence from './markdown/fence'
 
-export interface ThemeConfig extends DefaultTheme.Config {}
+export interface ThemeConfig extends Omit<DefaultTheme.Config, 'socialLinks'> {
+  socialLinks: ThemeConfig.SocialLink[]
+}
+
+export namespace ThemeConfig {
+  export interface SocialLink {
+    icon: string
+    link: string
+  }
+}
 
 export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig<ThemeConfig>> => ({
   ...config,
@@ -48,6 +57,7 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
         '@theme-default': 'vitepress/dist/client/theme-default',
         '../composables/outline.js': resolve(__dirname, '../client/composables/outline'),
         '../composables/prev-next.js': resolve(__dirname, '../client/composables/prev-next'),
+        '../support/socialIcons.js': resolve(__dirname, '../client/support/social-icons'),
       },
     },
   }, config?.vite || {}),
