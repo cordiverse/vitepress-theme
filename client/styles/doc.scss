@@ -15,6 +15,10 @@
   li > ol, li > ul {
     margin-top: 0;
   }
+  
+  div[class*='language-'] + div[class*='language-'] {
+    margin-top: 0;
+  }
 }
 
 .vp-doc .custom-block {

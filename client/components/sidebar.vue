@@ -8,11 +8,11 @@ const props = defineProps<{
   open: boolean
 }>()
 // a11y: focus Nav element when menu has opened
-const navEl = ref<{ wrap$: HTMLElement } | null>(null)
+const navEl = ref<{ wrapRef: HTMLElement } | null>(null)
 watchPostEffect(async () => {
   if (props.open) {
     await nextTick()
-    navEl.value?.wrap$.focus()
+    navEl.value?.wrapRef.focus()
   }
 })
 </script>

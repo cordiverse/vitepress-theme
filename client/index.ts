@@ -1,7 +1,7 @@
 import { Theme } from 'vitepress'
 import { Component, InjectionKey, reactive } from 'vue'
-import { ElScrollbar } from 'element-plus'
 import { useLocalStorage } from '@vueuse/core'
+import ElScrollbar from 'el-scrollbar'
 import VPDoc from '@theme-default/components/VPDoc.vue'
 import Badge from './components/badge.vue'
 import ChatMessage from './components/chat-message.vue'
@@ -10,8 +10,6 @@ import TabSelect from './components/tab-select.vue'
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 
-import 'element-plus/theme-chalk/base.css'
-import 'element-plus/theme-chalk/el-scrollbar.css'
 import './styles/aside.scss'
 import './styles/code.scss'
 import './styles/doc.scss'
@@ -45,7 +43,7 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
   ...DefaultTheme,
   Layout,
   enhanceApp({ app }) {
-    app.use(ElScrollbar)
+    app.component('ElScrollbar', ElScrollbar)
     app.component('Badge', Badge)
     app.component('ChatMessage', ChatMessage)
     app.component('ChatPanel', PanelView)
