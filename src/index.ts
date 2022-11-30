@@ -17,6 +17,14 @@ export namespace ThemeConfig {
   }
 }
 
+const getRepoName = (title: string) => {
+  if (title.startsWith('@')) {
+    return title.slice(1)
+  } else {
+    return 'koishijs/' + title
+  }
+}
+
 export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig> => ({
   ...config,
 
@@ -25,12 +33,12 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
     ...config.themeConfig,
 
     socialLinks: Object.entries({
-      github: `https://github.com/koishijs/${config.title}`,
+      github: `https://github.com/${getRepoName(config.title)}`,
       ...config.themeConfig.socialLinks,
     }).map(([icon, link]) => ({ icon, link })),
 
     editLink: {
-      pattern: `https://github.com/koishijs/${config.title}/edit/master/docs/:path`,
+      pattern: `https://github.com/${getRepoName(config.title)}/edit/master/docs/:path`,
       ...config.themeConfig.editLink,
     },
   },

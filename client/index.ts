@@ -15,8 +15,8 @@ import './styles/code.scss'
 import './styles/doc.scss'
 import './styles/vars.scss'
 
-export const ThemeConfig: InjectionKey<ThemeConfig> = Symbol('theme-config')
-export const ClientConfig: InjectionKey<ClientConfig> = Symbol('clinet-config')
+export const ThemeConfig: InjectionKey<ThemeConfig> = Symbol.for('theme-config')
+export const ClientConfig: InjectionKey<ClientConfig> = Symbol.for('client-config')
 
 export interface ThemeConfig {
   layouts?: Record<string, Component>
