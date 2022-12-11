@@ -1,6 +1,6 @@
 import { Theme } from 'vitepress'
-import { Component, InjectionKey, reactive } from 'vue'
-import { useLocalStorage } from '@vueuse/core'
+import { Component, computed, inject, InjectionKey, reactive } from 'vue'
+import { MaybeComputedRef, resolveRef, useLocalStorage } from '@vueuse/core'
 import ElScrollbar from 'el-scrollbar'
 import VPDoc from '@theme-default/components/VPDoc.vue'
 import Badge from './components/badge.vue'
@@ -17,6 +17,19 @@ import './styles/vars.scss'
 
 export const ThemeConfig: InjectionKey<ThemeConfig> = Symbol.for('theme-config')
 export const ClientConfig: InjectionKey<ClientConfig> = Symbol.for('client-config')
+
+export function useActiveTab(keys: MaybeComputedRef<string[]>) {
+  const config = inject(ClientConfig)
+  const _keys = resolveRef(keys)
+  return computed({
+    get: () => config.tabs.find(name => _keys.value.includes(name)) || _keys.value[0],
+    set: (value) => {
+      const index = config.tabs.indexOf(value)
+      if (index >= 0) config.tabs.splice(index, 1)
+      config.tabs.unshift(value)
+    },
+  })
+}
 
 export interface ThemeConfig {
   layouts?: Record<string, Component>

@@ -5,7 +5,7 @@
         v-for="key in keys"
         :key="key"
         :class="{ active: active === key }"
-        @click="setActive(key)"
+        @click="active = key"
       >
         <slot :name="'title-' + key">{{ key }}</slot>
       </span>
@@ -16,8 +16,8 @@
 
 <script lang="ts" setup>
 
-import { computed, inject, useSlots } from 'vue'
-import { ClientConfig } from '..'
+import { computed, useSlots } from 'vue'
+import { useActiveTab } from '..'
 
 const slots = useSlots()
 
@@ -27,16 +27,7 @@ const keys = computed(() => {
     .map(key => key.slice(4))
 })
 
-const config = inject(ClientConfig)
-const active = computed(() => {
-  return config.tabs.find(name => keys.value.includes(name)) || keys.value[0]
-})
-
-function setActive(lang: any) {
-  const index = config.tabs.indexOf(lang)
-  if (index >= 0) config.tabs.splice(index, 1)
-  config.tabs.unshift(lang)
-}
+const active = useActiveTab(keys)
 
 </script>
 
