@@ -25,11 +25,19 @@ const getRepoName = (title: string) => {
   }
 }
 
+const git = (() => {
+  const branch = process.env.VERCEL_GIT_COMMIT_REF || process.env.GITHUB_REF_NAME || 'main'
+  const sha = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || ''
+  return { branch, sha }
+})()
+
 export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig> => ({
   ...config,
 
   themeConfig: {
     outline: [2, 3],
+    outlineTitle: '目录',
+    lastUpdatedText: '上次更新',
     ...config.themeConfig,
 
     socialLinks: Object.entries({
@@ -38,7 +46,8 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
     }).map(([icon, link]) => ({ icon, link })),
 
     editLink: {
-      pattern: `https://github.com/${getRepoName(config.title)}/edit/master/docs/:path`,
+      text: '编辑此页面',
+      pattern: `https://github.com/${getRepoName(config.title)}/edit/${git.branch}/docs/:path`,
       ...config.themeConfig.editLink,
     },
   },
