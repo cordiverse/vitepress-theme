@@ -2,11 +2,13 @@ import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
+import search from './search'
 import container from './markdown/container'
 import highlight from './markdown/highlight'
 import fence from './markdown/fence'
 
 export interface ThemeConfig extends Omit<DefaultTheme.Config, 'socialLinks'> {
+  indexName?: string
   socialLinks?: Record<string, string>
 }
 
@@ -22,6 +24,14 @@ const getRepoName = (title: string) => {
     return title.slice(1)
   } else {
     return 'koishijs/' + title
+  }
+}
+
+const getIndexName = (title: string) => {
+  if (title.startsWith('@koishijs/')) {
+    return title.slice(10)
+  } else if (title.startsWith('koishi-plugin-')) {
+    return title.slice(14)
   }
 }
 
@@ -103,5 +113,14 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
         strict: false,
       },
     },
+
+    plugins: [
+      ...process.env.MEILISEARCH_HOST ? [search({
+        host: process.env.MEILISEARCH_HOST,
+        readKey: process.env.MEILISEARCH_READ_KEY,
+        writeKey: process.env.MEILISEARCH_WRITE_KEY,
+        indexName: config.themeConfig.indexName ?? getIndexName(config.title),
+      })] : [],
+    ],
   }, config?.vite || {}),
 })

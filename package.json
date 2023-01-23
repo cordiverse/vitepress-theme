@@ -35,8 +35,11 @@
   },
   "dependencies": {
     "@mdit-vue/shared": "^0.11.0",
+    "@meilisearch/instant-meilisearch": "^0.10.1",
     "@vueuse/core": "^8.9.4",
     "el-scrollbar": "^1.0.0",
-    "markdown-it-container": "^3.0.0"
+    "markdown-it-container": "^3.0.0",
+    "meilisearch": "^0.30.0",
+    "vue-instantsearch": "^4.7.2"
   }
 }
