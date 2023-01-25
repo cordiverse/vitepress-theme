@@ -32,6 +32,8 @@ export function useActiveTab(keys: MaybeComputedRef<string[]>) {
 }
 
 export interface ThemeConfig {
+  Layout?: Component
+  NotFount?: Component
   layouts?: Record<string, Component>
 }
 
@@ -52,9 +54,12 @@ function createStorage(initial: ClientConfig) {
   return reactive(storage.value)
 }
 
+export { Layout }
+
 export const defineTheme = (config: ThemeConfig = {}): Theme => ({
   ...DefaultTheme,
   Layout,
+  ...config,
   enhanceApp({ app }) {
     app.component('ElScrollbar', ElScrollbar)
     app.component('Badge', Badge)

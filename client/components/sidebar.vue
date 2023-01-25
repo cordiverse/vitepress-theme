@@ -27,6 +27,7 @@ watchPostEffect(async () => {
     ref="navEl"
     @click.stop
   >
+    <slot name="sidebar-nav-before" />
     <nav class="vp-sidebar-nav" id="VPSidebarNav" aria-labelledby="sidebar-aria-label" tabindex="-1">
       <span class="visually-hidden" id="sidebar-aria-label">
         Sidebar Navigation
@@ -41,6 +42,7 @@ watchPostEffect(async () => {
         />
       </div>
     </nav>
+    <slot name="sidebar-nav-after" />
   </ElScrollbar>
 </template>
 

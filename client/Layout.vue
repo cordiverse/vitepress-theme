@@ -11,7 +11,10 @@
       <template #nav-screen-content-after></template>
     </VPNav>
     <VPLocalNav :open="isSidebarOpen" @open-menu="openSidebar" />
-    <VPSidebar :open="isSidebarOpen" />
+    <VPSidebar :open="isSidebarOpen">
+      <template #sidebar-nav-before><slot name="sidebar-nav-before"></slot></template>
+      <template #sidebar-nav-after><slot name="sidebar-nav-after"></slot></template>
+    </VPSidebar>
 
     <div class="VPContent" id="VPContent" :class="contentClass">
       <NotFound v-if="route.component === NotFound" />
