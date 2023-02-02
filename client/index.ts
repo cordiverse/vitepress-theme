@@ -35,6 +35,7 @@ export interface ThemeConfig {
   Layout?: Component
   NotFount?: Component
   layouts?: Record<string, Component>
+  enhanceApp?: Function
 }
 
 export interface ClientConfig {
@@ -60,21 +61,22 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
   ...DefaultTheme,
   Layout,
   ...config,
-  enhanceApp({ app }) {
-    app.component('ElScrollbar', ElScrollbar)
-    app.component('Badge', Badge)
-    app.component('ChatMessage', ChatMessage)
-    app.component('ChatPanel', PanelView)
-    app.component('TabSelect', TabSelect)
+  enhanceApp(ctx) {
+    config.enhanceApp?.(ctx)
+    ctx.app.component('ElScrollbar', ElScrollbar)
+    ctx.app.component('Badge', Badge)
+    ctx.app.component('ChatMessage', ChatMessage)
+    ctx.app.component('ChatPanel', PanelView)
+    ctx.app.component('TabSelect', TabSelect)
 
-    app.provide(ThemeConfig, {
+    ctx.app.provide(ThemeConfig, {
       layouts: {
         ...config.layouts,
         default: VPDoc,
       },
     })
 
-    app.provide(ClientConfig, createStorage({
+    ctx.app.provide(ClientConfig, createStorage({
       tabs: [],
     }))
   },
