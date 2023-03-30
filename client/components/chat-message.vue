@@ -188,6 +188,14 @@ $msgbox-left: 4.2rem;
     line-height: 26px !important;
   }
 
+  p.indent-1 {
+    padding-left: 1rem;
+  }
+
+  p.indent-2 {
+    padding-left: 2rem;
+  }
+
   blockquote {
     font-size: 0.9rem;
     margin: 0 0 0.2rem;
