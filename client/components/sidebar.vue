@@ -2,8 +2,8 @@
 import { nextTick, ref, watchPostEffect } from 'vue'
 // @ts-ignore
 import { useSidebar } from '@theme-default/composables/sidebar.js'
-import VPSidebarGroup from '@theme-default/components/VPSidebarGroup.vue'
-const { sidebar, hasSidebar } = useSidebar()
+import VPSidebarItem from '@theme-default/components/VPSidebarItem.vue'
+const { sidebar, hasSidebar, sidebarGroups } = useSidebar()
 const props = defineProps<{
   open: boolean
 }>()
@@ -27,22 +27,17 @@ watchPostEffect(async () => {
     ref="navEl"
     @click.stop
   >
-    <slot name="sidebar-nav-before" />
-    <nav class="vp-sidebar-nav" id="VPSidebarNav" aria-labelledby="sidebar-aria-label" tabindex="-1">
-      <span class="visually-hidden" id="sidebar-aria-label">
-        Sidebar Navigation
-      </span>
+    <div class="curtain" />
 
-      <div v-for="group in sidebar" :key="group.text" class="vp-sidebar-group">
-        <VPSidebarGroup
-          :text="group.text"
-          :items="group.items"
-          :collapsible="group.collapsible"
-          :collapsed="group.collapsed"
-        />
+    <nav class="vp-sidebar-nav">
+      <slot name="sidebar-nav-before" />
+
+      <div v-for="item in sidebarGroups" :key="item.text" class="group">
+        <VPSidebarItem :item="item" :depth="0" />
       </div>
+
+      <slot name="sidebar-nav-after" />
     </nav>
-    <slot name="sidebar-nav-after" />
   </ElScrollbar>
 </template>
 
@@ -66,6 +61,7 @@ watchPostEffect(async () => {
 }
 .vp-sidebar-view {
   padding: 32px 0 64px;
+  overflow-x: hidden;
 }
 .vp-sidebar.open {
   opacity: 1;
@@ -89,7 +85,7 @@ watchPostEffect(async () => {
     transform: translateX(0);
   }
   .vp-sidebar-view {
-    padding-top: var(--vp-nav-height-desktop);
+    padding-top: var(--vp-nav-height);
     padding-bottom: 32px;
   }
 }
@@ -99,23 +95,43 @@ watchPostEffect(async () => {
     width: calc((100% - (var(--vp-layout-max-width) - 64px)) / 2 + var(--vp-sidebar-width) - 32px);
   }
 }
+@media (min-width: 960px) {
+  .curtain {
+    position: sticky;
+    top: -64px;
+    left: 0;
+    z-index: 1;
+    margin-top: calc(var(--vp-nav-height) * -1);
+    margin-right: -32px;
+    margin-left: -32px;
+    height: var(--vp-nav-height);
+    background-color: var(--vp-sidebar-bg-color);
+  }
+}
 .vp-sidebar-nav {
   outline: 0;
 }
 
-.vp-sidebar-group + .vp-sidebar-group {
+.vp-sidebar-nav > .group:not(:first-child) {
   margin-top: 16px;
-  border-top: 1px solid var(--vp-c-divider-light);
-  padding-top: 16px;
 }
 
+.group + .group {
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 16px;
+}
 @media (min-width: 960px) {
-  .vp-sidebar-group {
+  .group {
     padding-top: 16px;
     width: calc(var(--vp-sidebar-width) - 64px);
   }
-  .vp-sidebar-group + .vp-sidebar-group {
-    margin-top: 16px;
+}
+
+.group .VPSidebarItem.level-0 {
+  padding-bottom: 0;
+  > .item > .text {
+    padding: 0;
+    margin: 4px 0;
   }
 }
 

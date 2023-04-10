@@ -1,20 +1,44 @@
-.VPSidebarGroup {
+.VPSidebarItem {
+  &.is-link {
+    margin: 4px 0;
+  }
+
+  .items {
+    overflow: hidden;
+  }
+
   .items:first-child {
-    a:first-child {
-      padding-top: 6px;
-      padding-bottom: 6px;
-      line-height: 20px;
+    .VPSidebarItem.is-link:first-child {
+      padding-top: 4px;
+      padding-bottom: 4px;
+      line-height: 24px;
       font-size: 14px;
       margin: 0;
-      color: var(--vp-c-text-1);
 
-      .link-text {
+      p.text {
         font-weight: 700;
+        color: var(--vp-c-text-1);
       }
 
       &.active {
         color: var(--vp-c-brand);
       }
+    }
+  }
+
+  .item {
+    p.text {
+      padding: 0;
+    }
+  }
+}
+
+@media (min-width: 1440px) {
+  .VPNavBar.has-sidebar .container .content {
+    padding-right: 0;
+
+    .content-body {
+      padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
     }
   }
 }
