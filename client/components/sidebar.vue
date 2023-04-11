@@ -97,15 +97,12 @@ watchPostEffect(async () => {
 }
 @media (min-width: 960px) {
   .curtain {
-    position: sticky;
-    top: -64px;
-    left: 0;
-    z-index: 1;
     margin-top: calc(var(--vp-nav-height) * -1);
-    margin-right: -32px;
-    margin-left: -32px;
     height: var(--vp-nav-height);
-    background-color: var(--vp-sidebar-bg-color);
+  }
+  .el-scrollbar .vp-sidebar {
+    height: calc(100% - 64px);
+    top: 64px;
   }
 }
 .vp-sidebar-nav {

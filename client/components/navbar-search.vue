@@ -85,7 +85,19 @@ function cleanSearch() {
 .VPNavBarSearch {
     display: flex;
     align-items: center;
-    padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+    .VPNavBarSearch {
+        flex-grow: 1;
+        padding-left: 24px;
+    }
+}
+
+@media (min-width: 960px) {
+    .VPNavBarSearch {
+        padding-left: 32px;
+    }
 }
 
 .modal-back {

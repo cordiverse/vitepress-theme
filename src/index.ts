@@ -1,4 +1,4 @@
-import { DefaultTheme, UserConfig } from 'vitepress'
+import { DefaultTheme, LocaleConfig, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
@@ -40,6 +40,8 @@ const git = (() => {
   const sha = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || ''
   return { branch, sha }
 })()
+
+export const defineLocale = (config: LocaleConfig<ThemeConfig>[string]): LocaleConfig<ThemeConfig>[string] => config
 
 export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig> => ({
   ...config,

@@ -20,7 +20,7 @@
         color: var(--vp-c-text-1);
       }
 
-      &.active {
+      &.is-active p.text {
         color: var(--vp-c-brand);
       }
     }
@@ -40,5 +40,11 @@
     .content-body {
       padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
     }
+  }
+}
+
+@media (min-width: 960px)  {
+  .VPNavBar.has-sidebar .title {
+    background-color: var(--vp-sidebar-bg-color);
   }
 }

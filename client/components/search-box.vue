@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import { useData } from "vitepress";
 import SearchItem from "./search-item.vue";
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
@@ -17,7 +17,7 @@ const indexName = __VITE_MEILISEARCH_INDEX__
 
 const emit = defineEmits(["close"]);
 
-const { localePath } = useData();
+const { localeIndex } = useData();
 
 const searchTerm = ref();
 const origin = ref("");
@@ -40,7 +40,7 @@ function GroupBy(array, func) {
 };
 
 onMounted(() => {
-  origin.value = localePath.value;
+  origin.value = localeIndex.value;
 });
 
 function cleanSearch() {
