@@ -1,4 +1,5 @@
 import { readdir, readFile } from 'fs/promises'
+import { relative } from 'path'
 let rootPath = ''
 
 const replaceMdSyntax = (mdCode) =>
@@ -249,7 +250,7 @@ function parseMdContent(mdCode, path) {
   // return mdData;
 };
 
-const buildDoc = (mdDoc, id) => {
+const buildDoc = (mdDoc, id, relativePath: string) => {
   let anchor = mdDoc.anchor.replace('\r', '')
   if (anchor[0] === '#') anchor = anchor.replace('#', '')
 
@@ -292,22 +293,23 @@ const buildDoc = (mdDoc, id) => {
     lvl4: mdDoc.lvl4,
     lvl5: mdDoc.lvl5,
     lvl6: mdDoc.lvl6,
+    locale: relativePath.split('/', 1)[0],
     alternate,
   }
 }
 
-export async function buildDocs(HTML_FOLDER) {
-  const files = await processMdFiles(HTML_FOLDER)
+export async function buildDocs(root: string) {
+  const files = await processMdFiles(root)
 
   const docs = []
   if (files !== undefined) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
-      const mdDocs = parseMdContent(file.content, file.path)
+      const mdDocs = parseMdContent(file.content, relative(root, file.path))
 
       for (let index = 0; index < mdDocs.length; index++) {
         const mdDoc = mdDocs[index]
-        docs.push(buildDoc(mdDoc, i.toString() + '-' + index.toString()))
+        docs.push(buildDoc(mdDoc, i.toString() + '-' + index.toString(), relative(root, file.path)))
       }
     }
   }

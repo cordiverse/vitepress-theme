@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { useData } from "vitepress";
+import { useData, withBase } from "vitepress";
 import SearchItem from "./search-item.vue";
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import { AisInstantSearch, AisSearchBox, AisInfiniteHits, AisStateResults } from 'vue-instantsearch/vue3/es/index.js'
+import { AisInstantSearch, AisConfigure, AisSearchBox, AisInfiniteHits, AisStateResults } from 'vue-instantsearch/vue3/es/index.js'
 import DebounceInput from "./debounced-input.vue";
 
 const searchClient = instantMeiliSearch(
@@ -58,6 +58,7 @@ defineExpose({
   <div class="modal" @click.stop>
     <div class="modal-content">
       <AisInstantSearch :search-client="searchClient" :index-name="indexName" class="search-client">
+        <AisConfigure :facet-filters.camel="['locale:' + localeIndex]"></AisConfigure>
         <AisSearchBox
           spellcheck="false"
           :autofocus="true"
@@ -116,7 +117,7 @@ defineExpose({
                     :key="groupKey"
                   >
                     <span class="search-group">
-                      <a :href="localePath + group[0].pageLink">{{
+                      <a :href="withBase(group[0].pageLink)">{{
                         groupKey
                           ? groupKey.toString()[0].toUpperCase() +
                             groupKey.toString().slice(1)

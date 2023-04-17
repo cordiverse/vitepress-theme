@@ -30,6 +30,7 @@ function SearchPlugin({ host, indexName, readKey = '', writeKey = '' }: SearchPl
       'lvl1',
       'alternate',
     ])
+    await index.updateFilterableAttributes(['locale'])
     await index.updateSortableAttributes(['pageLink'])
     await index.updateRankingRules([
       'exactness',

@@ -1,19 +1,14 @@
 <script setup lang="ts">
 import { AisHighlight } from "vue-instantsearch/vue3/es/index.js";
 import { computed } from "vue";
-import { useData } from "vitepress";
-
-const { localePath } = useData();
+import { withBase, useData } from "vitepress";
 
 const props = defineProps({
   item: Object,
   origin: String,
 });
 
-const linkHref = computed(
-  () =>
-    `${localePath.value}${props.item.link}`
-);
+const { localeIndex } = useData();
 
 const title = computed(() =>
   [props.item.lvl1, props.item.lvl2, props.item.lvl3, props.item.lvl4]
@@ -24,7 +19,7 @@ const title = computed(() =>
 </script>
 
 <template>
-  <a :href="linkHref">
+  <a :href="withBase(props.item.link)">
     <div class="search-item">
       <span class="item-type-icon">{{ item.anchorLink ? "＃" : "☰" }}</span>
       <div class="search-item-content">
