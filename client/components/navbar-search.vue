@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useData } from "vitepress"
 import SearchBox from './search-box.vue'
+
+const { theme } = useData()
 
 const metaKey = ref('Ctrl')
 const open = ref(false)
@@ -55,7 +58,7 @@ function cleanSearch() {
             <button
                 type="button"
                 class="DocSearch DocSearch-Button"
-                aria-label="Search">
+                :aria-label="theme.docsearch?.translations?.button?.buttonAriaLabel || 'Search'">
                 <span class="DocSearch-Button-Container">
                     <svg
                         width="20"
@@ -70,7 +73,7 @@ function cleanSearch() {
                             stroke-linecap="round"
                             stroke-linejoin="round"></path>
                     </svg>
-                    <span class="DocSearch-Button-Placeholder">搜索</span>
+                    <span class="DocSearch-Button-Placeholder">{{ theme.docsearch?.translations?.button?.buttonText || 'Search' }}</span>
                 </span>
                 <span class="DocSearch-Button-Keys">
                     <kbd class="DocSearch-Button-Key">{{ metaKey }}</kbd>

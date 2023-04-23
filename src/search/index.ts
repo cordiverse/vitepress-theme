@@ -47,6 +47,7 @@ function SearchPlugin({ host, indexName, readKey = '', writeKey = '' }: SearchPl
   return {
     name: 'vite-plugin-search',
     enforce: 'pre',
+
     configResolved(resolvedConfig) {
       config = resolvedConfig
     },

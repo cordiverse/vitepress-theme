@@ -3,7 +3,7 @@ import { nextTick, ref, watchPostEffect } from 'vue'
 // @ts-ignore
 import { useSidebar } from '@theme-default/composables/sidebar.js'
 import VPSidebarItem from '@theme-default/components/VPSidebarItem.vue'
-const { sidebar, hasSidebar, sidebarGroups } = useSidebar()
+const { hasSidebar, sidebarGroups } = useSidebar()
 const props = defineProps<{
   open: boolean
 }>()

@@ -7,9 +7,10 @@ import container from './markdown/container'
 import highlight from './markdown/highlight'
 import fence from './markdown/fence'
 
-export interface ThemeConfig extends Omit<DefaultTheme.Config, 'socialLinks'> {
+export interface ThemeConfig extends Omit<DefaultTheme.Config, 'socialLinks' | 'algolia'> {
   indexName?: string
   socialLinks?: Record<string, string>
+  docsearch?: Partial<DefaultTheme.AlgoliaSearchOptions>
 }
 
 export namespace ThemeConfig {

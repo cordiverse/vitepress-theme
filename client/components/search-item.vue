@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { AisHighlight } from "vue-instantsearch/vue3/es/index.js";
 import { computed } from "vue";
-import { withBase, useData } from "vitepress";
+import { withBase } from "vitepress";
 
 const props = defineProps({
   item: Object,
   origin: String,
 });
-
-const { localeIndex } = useData();
 
 const title = computed(() =>
   [props.item.lvl1, props.item.lvl2, props.item.lvl3, props.item.lvl4]

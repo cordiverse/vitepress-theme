@@ -17,7 +17,7 @@ const indexName = __VITE_MEILISEARCH_INDEX__
 
 const emit = defineEmits(["close"]);
 
-const { localeIndex } = useData();
+const { theme, localeIndex } = useData();
 
 const searchTerm = ref();
 const origin = ref("");
@@ -63,90 +63,87 @@ defineExpose({
           spellcheck="false"
           :autofocus="true"
           type="search"
+          #="{ currentRefinement, isSearchStalled, refine }"
         >
-          <template v-slot="{ currentRefinement, isSearchStalled, refine }">
-            <form class="DocSearch-Form" @submit.prevent>
-              <label
-                class="DocSearch-MagnifierLabel"
-                for="docsearch-input"
-                id="docsearch-label"
+          <form class="DocSearch-Form" @submit.prevent>
+            <label
+              class="DocSearch-MagnifierLabel"
+              for="docsearch-input"
+              id="docsearch-label"
+            >
+              <svg
+                width="20"
+                height="20"
+                class="DocSearch-Search-Icon"
+                viewBox="0 0 20 20"
               >
-                <svg
-                  width="20"
-                  height="20"
-                  class="DocSearch-Search-Icon"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
-                    stroke="currentColor"
-                    fill="none"
-                    fill-rule="evenodd"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </label>
-              <DebounceInput
-                type="search"
-                class="DocSearch-Input"
-                placeholder="搜索文档"
-                autofocus
-                :value="currentRefinement"
-                @change="v => refine(v)"
-                @reset="cleanSearch"
-                ref="input"
-              />
-              <span v-show="isSearchStalled">Loading...</span>
-            </form>
-          </template>
+                <path
+                  d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
+                  stroke="currentColor"
+                  fill="none"
+                  fill-rule="evenodd"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+            </label>
+            <DebounceInput
+              type="search"
+              class="DocSearch-Input"
+              :placeholder="theme.docsearch?.placeholder || 'Search'"
+              autofocus
+              :value="currentRefinement"
+              @change="v => refine(v)"
+              @reset="cleanSearch"
+              ref="input"
+            />
+            <span v-show="isSearchStalled">Loading...</span>
+          </form>
         </AisSearchBox>
-        <AisStateResults>
-          <template v-slot="{ results: { hits, query } }">
-            <AisInfiniteHits v-if="query.length > 0 && hits.length > 0">
-              <template v-slot="{
-                items,
-                refinePrevious,
-                refineNext,
-                isLastPage,
-                sendEvent,
-              }">
-                <div class="search-list">
-                  <div
-                    v-for="(group, groupKey) of GroupBy(items, (x) => x.pageTitle)"
-                    :key="groupKey"
-                  >
-                    <span class="search-group">
-                      <a :href="withBase(group[0].pageLink)">{{
-                        groupKey
-                          ? groupKey.toString()[0].toUpperCase() +
-                            groupKey.toString().slice(1)
-                          : "主页"
-                      }}</a>
-                    </span>
-                    <SearchItem
-                      v-for="item in group"
-                      :key="item.id"
-                      :item="item"
-                      :origin="origin"
-                      @click="cleanSearch"
-                    />
-                  </div>
-                  <div v-if="!isLastPage" class="show-more">
-                    <button class="btn-show-more" @click="refineNext">
-                      显示更多结果
-                    </button>
-                  </div>
+        <AisStateResults #="{ results: { hits, query } }">
+          <AisInfiniteHits v-if="query.length > 0 && hits.length > 0">
+            <template v-slot="{
+              items,
+              refinePrevious,
+              refineNext,
+              isLastPage,
+              sendEvent,
+            }">
+              <div class="search-list">
+                <div
+                  v-for="(group, groupKey) of GroupBy(items, (x) => x.pageTitle)"
+                  :key="groupKey"
+                >
+                  <span class="search-group">
+                    <a :href="withBase(group[0].pageLink)">{{
+                      groupKey
+                        ? groupKey.toString()[0].toUpperCase() +
+                          groupKey.toString().slice(1)
+                        : "主页"
+                    }}</a>
+                  </span>
+                  <SearchItem
+                    v-for="item in group"
+                    :key="item.id"
+                    :item="item"
+                    :origin="origin"
+                    @click="cleanSearch"
+                  />
                 </div>
-              </template>
-            </AisInfiniteHits>
-            <div v-else-if="query.length > 0" class="state-text">
-              找不到和您查询的 “{{ query }}” 相符的内容或信息。
-            </div>
-            <div v-else>
+                <div v-if="!isLastPage" class="show-more">
+                  <button class="btn-show-more" @click="refineNext">
+                    显示更多结果
+                  </button>
+                </div>
+              </div>
+            </template>
+          </AisInfiniteHits>
+          <div v-else-if="query.length > 0" class="state-text">
+            找不到和您查询的 “{{ query }}” 相符的内容或信息。
+          </div>
+          <div v-else>
 
-            </div>
-          </template>
+          </div>
         </AisStateResults>
 
         <!-- <div class="DocSearch-Footer">
