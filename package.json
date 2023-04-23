@@ -1,11 +1,12 @@
 {
   "name": "@koishijs/vitepress",
   "description": "VitePress theme for Koishi projects",
-  "version": "1.9.0",
+  "version": "1.9.2",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "files": [
     "lib",
+    "locales",
     "client"
   ],
   "author": "Shigma <shigma10826@gmail.com>",
@@ -37,6 +38,7 @@
     "@mdit-vue/shared": "^0.11.2",
     "@meilisearch/instant-meilisearch": "^0.10.1",
     "@vueuse/core": "^9.13.0",
+    "cosmokit": "^1.4.1",
     "el-scrollbar": "^1.0.0",
     "markdown-it-container": "^3.0.0",
     "meilisearch": "^0.30.0",

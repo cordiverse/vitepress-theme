@@ -2,10 +2,20 @@ import { DefaultTheme, LocaleConfig, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
+import { valueMap } from 'cosmokit'
 import search from './search'
 import container from './markdown/container'
 import highlight from './markdown/highlight'
 import fence from './markdown/fence'
+
+const locales = {
+  'de-DE': require('../locales/de-DE'),
+  'en-US': require('../locales/en-US'),
+  'fr-FR': require('../locales/fr-FR'),
+  'ja-JP': require('../locales/ja-JP'),
+  'ru-RU': require('../locales/ru-RU'),
+  'zh-CN': require('../locales/zh-CN'),
+}
 
 export interface ThemeConfig extends Omit<DefaultTheme.Config, 'socialLinks' | 'algolia'> {
   indexName?: string
@@ -36,6 +46,15 @@ const getIndexName = (title: string) => {
   }
 }
 
+function deepMerge(a: any, b: any) {
+  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return b
+  const result = {}
+  for (const key in { ...a, ...b }) {
+    result[key] = deepMerge(a[key], b[key])
+  }
+  return result
+}
+
 const git = (() => {
   const branch = process.env.VERCEL_GIT_COMMIT_REF || process.env.GITHUB_REF_NAME || 'main'
   const sha = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || ''
@@ -44,13 +63,14 @@ const git = (() => {
 
 export const defineLocale = (config: LocaleConfig<ThemeConfig>[string]): LocaleConfig<ThemeConfig>[string] => config
 
-export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig> => ({
+export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig<ThemeConfig>> => ({
   ...config,
+
+  locales: config.locales ? valueMap(config.locales, (value, key) => deepMerge(locales[key], value)) : null,
 
   themeConfig: {
     outline: [2, 3],
-    outlineTitle: '目录',
-    lastUpdatedText: '上次更新',
+    ...locales['zh-CN'],
     ...config.themeConfig,
 
     socialLinks: Object.entries({
@@ -58,10 +78,9 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
       ...config.themeConfig.socialLinks,
     }).map(([icon, link]) => ({ icon, link })),
 
-    editLink: {
-      text: '编辑此页面',
+    editLink: !config.themeConfig.editLink ? null : {
+      ...locales['zh-CN'].themeConfig.editLink,
       pattern: `https://github.com/${getRepoName(config.title)}/edit/${git.branch}/docs/:path`,
-      ...config.themeConfig.editLink,
     },
   },
 
