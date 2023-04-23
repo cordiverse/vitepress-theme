@@ -2,7 +2,7 @@ import { DefaultTheme, LocaleConfig, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
-import { valueMap } from 'cosmokit'
+import { isNullable, valueMap } from 'cosmokit'
 import search from './search'
 import container from './markdown/container'
 import highlight from './markdown/highlight'
@@ -47,7 +47,12 @@ const getIndexName = (title: string) => {
 }
 
 function deepMerge(a: any, b: any) {
-  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return b
+  if (isNullable(a)) return b
+  if (isNullable(b)) {
+    return a
+  } else if (typeof b !== 'object') {
+    return b
+  }
   const result = {}
   for (const key in { ...a, ...b }) {
     result[key] = deepMerge(a[key], b[key])
