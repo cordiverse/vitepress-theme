@@ -71,7 +71,7 @@ const config = inject(ThemeConfig)
 
 const NotFound = inject('NotFound')
 const component = computed(() => {
-  return config.layouts[frontmatter.value.layout] || config.layouts.default
+  return config.layouts[frontmatter.value.layout?.toLowerCase()] || config.layouts.default
 })
 
 const contentClass = computed(() => ({

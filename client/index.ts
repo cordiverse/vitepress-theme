@@ -62,22 +62,22 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
   Layout,
   ...config,
   enhanceApp(ctx) {
-    config.enhanceApp?.(ctx)
     ctx.app.component('ElScrollbar', ElScrollbar)
     ctx.app.component('Badge', Badge)
     ctx.app.component('ChatMessage', ChatMessage)
     ctx.app.component('ChatPanel', PanelView)
     ctx.app.component('TabSelect', TabSelect)
 
-    ctx.app.provide(ThemeConfig, {
-      layouts: {
-        ...config.layouts,
-        default: VPDoc,
-      },
-    })
+    const layouts = { default: VPDoc }
+    for (const key in config.layouts) {
+      layouts[key.toLowerCase()] = config.layouts[key]
+    }
 
+    ctx.app.provide(ThemeConfig, { layouts })
     ctx.app.provide(ClientConfig, createStorage({
       tabs: [],
     }))
+
+    config.enhanceApp?.(ctx)
   },
 })
