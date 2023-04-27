@@ -73,6 +73,7 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
       layouts[key.toLowerCase()] = config.layouts[key]
     }
 
+    ctx.app.provide('NotFound', DefaultTheme.NotFound)
     ctx.app.provide(ThemeConfig, { layouts })
     ctx.app.provide(ClientConfig, createStorage({
       tabs: [],

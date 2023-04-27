@@ -1,8 +1,8 @@
 import { DefaultTheme } from 'vitepress'
 // @ts-ignore
-import { MenuItem, resolveHeaders, useActiveAnchor } from '@theme-default/composables/outline.js'
+import { MenuItem, resolveHeaders, resolveTitle, useActiveAnchor } from '@theme-default/composables/outline'
 
-export { resolveHeaders, useActiveAnchor }
+export { resolveHeaders, resolveTitle, useActiveAnchor }
 
 export function getHeaders(pageOutline: DefaultTheme.Config['outline']) {
   if (pageOutline === false) return []

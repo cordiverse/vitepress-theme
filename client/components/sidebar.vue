@@ -21,7 +21,7 @@ watchPostEffect(async () => {
   <ElScrollbar
     tag="aside"
     v-if="hasSidebar"
-    class="vp-sidebar"
+    class="VPSidebar"
     view-class="vp-sidebar-view"
     :class="{ open }"
     ref="navEl"
@@ -42,7 +42,7 @@ watchPostEffect(async () => {
 </template>
 
 <style lang="scss">
-.vp-sidebar {
+.VPSidebar {
   position: fixed !important;
   padding: 0 32px;
   top: var(--vp-layout-top-height, 0px);
@@ -63,18 +63,18 @@ watchPostEffect(async () => {
   padding: 32px 0 64px;
   overflow-x: hidden;
 }
-.vp-sidebar.open {
+.VPSidebar.open {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
   transition: opacity 0.25s,
               transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
-.dark .vp-sidebar {
+.dark .VPSidebar {
   box-shadow: var(--vp-shadow-1);
 }
 @media (min-width: 960px) {
-  .vp-sidebar {
+  .VPSidebar {
     z-index: 1;
     width: var(--vp-sidebar-width);
     max-width: 100%;
@@ -90,7 +90,7 @@ watchPostEffect(async () => {
   }
 }
 @media (min-width: 1440px) {
-  .vp-sidebar {
+  .VPSidebar {
     padding-left: max(32px, calc((100% - (var(--vp-layout-max-width) - 64px)) / 2));
     width: calc((100% - (var(--vp-layout-max-width) - 64px)) / 2 + var(--vp-sidebar-width) - 32px);
   }
@@ -100,7 +100,7 @@ watchPostEffect(async () => {
     margin-top: calc(var(--vp-nav-height) * -1);
     height: var(--vp-nav-height);
   }
-  .el-scrollbar .vp-sidebar {
+  .el-scrollbar .VPSidebar {
     height: calc(100% - 64px);
     top: 64px;
   }
@@ -109,7 +109,7 @@ watchPostEffect(async () => {
   outline: 0;
 }
 
-.vp-sidebar-nav > .group:not(:first-child) {
+.vp-sidebar-nav > .group + .group {
   margin-top: 16px;
 }
 

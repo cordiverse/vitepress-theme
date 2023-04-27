@@ -125,8 +125,8 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
       dedupe: ['vue'],
       alias: {
         '@theme-default': 'vitepress/dist/client/theme-default',
-        '../composables/outline.js': resolve(__dirname, '../client/composables/outline'),
         '../support/socialIcons.js': resolve(__dirname, '../client/support/social-icons'),
+        '../composables/outline': resolve(__dirname, '../client/composables/outline'),
       },
     },
 
