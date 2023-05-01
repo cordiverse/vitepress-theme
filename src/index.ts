@@ -2,8 +2,9 @@ import { DefaultTheme, LocaleConfig, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
-import { isNullable, valueMap } from 'cosmokit'
+import { Dict, isNullable, valueMap } from 'cosmokit'
 import search from './search'
+import crowdin from './crowdin'
 import container from './markdown/container'
 import highlight from './markdown/highlight'
 import fence from './markdown/fence'
@@ -21,6 +22,7 @@ export interface ThemeConfig extends Omit<DefaultTheme.Config, 'socialLinks' | '
   indexName?: string
   socialLinks?: Record<string, string>
   docsearch?: Partial<DefaultTheme.AlgoliaSearchOptions>
+  crowdin?: Dict
 }
 
 export namespace ThemeConfig {
@@ -28,6 +30,10 @@ export namespace ThemeConfig {
     icon: string
     link: string
   }
+}
+
+interface Config extends UserConfig<ThemeConfig> {
+  fallbackLocale?: string
 }
 
 const getRepoName = (title: string) => {
@@ -46,7 +52,7 @@ const getIndexName = (title: string) => {
   }
 }
 
-function deepMerge(a: any, b: any) {
+function merge(a: any, b: any) {
   if (isNullable(a)) return b
   if (isNullable(b)) {
     return a
@@ -55,12 +61,12 @@ function deepMerge(a: any, b: any) {
   }
   const result = {}
   for (const key in { ...a, ...b }) {
-    result[key] = deepMerge(a[key], b[key])
+    result[key] = merge(a[key], b[key])
   }
   return result
 }
 
-const git = (() => {
+export const git = (() => {
   const branch = process.env.VERCEL_GIT_COMMIT_REF || process.env.GITHUB_REF_NAME || 'main'
   const sha = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || ''
   return { branch, sha }
@@ -68,14 +74,14 @@ const git = (() => {
 
 export const defineLocale = (config: LocaleConfig<ThemeConfig>[string]): LocaleConfig<ThemeConfig>[string] => config
 
-export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<UserConfig<ThemeConfig>> => ({
+export const defineConfig = async (config: Config): Promise<Config> => ({
   ...config,
 
-  locales: config.locales ? valueMap(config.locales, (value, key) => deepMerge(locales[key], value)) : null,
+  locales: config.locales ? valueMap(config.locales, (value, key) => merge(locales[key], value)) : null,
 
   themeConfig: {
     outline: [2, 3],
-    ...locales['zh-CN'],
+    ...locales[config.fallbackLocale || 'zh-CN'],
     ...config.themeConfig,
 
     socialLinks: Object.entries({
@@ -83,10 +89,9 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
       ...config.themeConfig.socialLinks,
     }).map(([icon, link]) => ({ icon, link })),
 
-    editLink: !config.themeConfig.editLink ? null : {
-      ...locales['zh-CN'].themeConfig.editLink,
-      pattern: `https://github.com/${getRepoName(config.title)}/edit/${git.branch}/docs/:path`,
-    },
+    crowdin: process.env.CROWDIN_TOKEN
+      ? await crowdin(+process.env.CROWDIN_PROJECT, +process.env.CROWDIN_BRANCH)
+      : null,
   },
 
   markdown: {
@@ -125,7 +130,7 @@ export const defineConfig = async (config: UserConfig<ThemeConfig>): Promise<Use
       dedupe: ['vue'],
       alias: {
         '@theme-default': 'vitepress/dist/client/theme-default',
-        '../support/socialIcons.js': resolve(__dirname, '../client/support/social-icons'),
+        '../composables/edit-link': resolve(__dirname, '../client/composables/edit-link'),
         '../composables/outline': resolve(__dirname, '../client/composables/outline'),
       },
     },

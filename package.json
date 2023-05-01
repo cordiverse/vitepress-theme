@@ -1,7 +1,7 @@
 {
   "name": "@koishijs/vitepress",
   "description": "VitePress theme for Koishi projects",
-  "version": "2.0.0",
+  "version": "2.0.6",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "files": [
@@ -38,7 +38,7 @@
   "dependencies": {
     "@mdit-vue/shared": "^0.12.0",
     "@meilisearch/instant-meilisearch": "^0.12.0",
-    "cosmokit": "^1.4.1",
+    "cosmokit": "^1.4.2",
     "el-scrollbar": "^1.0.0",
     "markdown-it-container": "^3.0.0",
     "meilisearch": "^0.32.3",
