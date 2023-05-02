@@ -56,6 +56,5 @@ export default async function crowdin(projectId: number, branchId: number) {
   while (await list(offset)) {
     offset += limit - margin
   }
-  console.log(result)
   return result
 }

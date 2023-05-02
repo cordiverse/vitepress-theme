@@ -1,4 +1,4 @@
-import { DefaultTheme, LocaleConfig, UserConfig } from 'vitepress'
+import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
@@ -34,6 +34,7 @@ export namespace ThemeConfig {
 
 interface Config extends UserConfig<ThemeConfig> {
   fallbackLocale?: string
+  locales?: Dict
 }
 
 const getRepoName = (title: string) => {
@@ -72,12 +73,40 @@ export const git = (() => {
   return { branch, sha }
 })()
 
-export const defineLocale = (config: LocaleConfig<ThemeConfig>[string]): LocaleConfig<ThemeConfig>[string] => config
+function transformLocale(prefix: string, source: any) {
+  if (Array.isArray(source)) {
+    return source.map(item => transformLocale(prefix, item))
+  }
+
+  const result: any = {}
+  for (const key in source) {
+    const value = source[key]
+    if (typeof value === 'string') {
+      if (key === 'link') {
+        result[key] = prefix + value
+      } else if (key === 'activeMatch') {
+        result[key] = '^' + prefix + value
+      } else {
+        result[key] = value
+      }
+    } else if (key === 'sidebar') {
+      result[key] = {}
+      for (const prop in value) {
+        result[key][prefix + prop] = transformLocale(prefix, value[prop])
+      }
+    } else {
+      result[key] = transformLocale(prefix, value)
+    }
+  }
+  return result
+}
 
 export const defineConfig = async (config: Config): Promise<Config> => ({
   ...config,
 
-  locales: config.locales ? valueMap(config.locales, (value, key) => merge(locales[key], value)) : null,
+  locales: config.locales ? valueMap(config.locales, (value, key) => {
+    return merge(locales[key], transformLocale('/' + key, value))
+  }) : null,
 
   themeConfig: {
     outline: [2, 3],
