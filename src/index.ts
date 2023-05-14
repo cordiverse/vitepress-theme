@@ -3,6 +3,7 @@ import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
 import { Dict, isNullable, valueMap } from 'cosmokit'
+import yaml from '@maikolib/vite-plugin-yaml'
 import search from './search'
 import crowdin from './crowdin'
 import container from './markdown/container'
@@ -74,7 +75,9 @@ export const git = (() => {
 })()
 
 function transformLocale(prefix: string, source: any) {
-  if (Array.isArray(source)) {
+  if (typeof source !== 'object') {
+    return source
+  } else if (Array.isArray(source)) {
     return source.map(item => transformLocale(prefix, item))
   }
 
@@ -83,7 +86,7 @@ function transformLocale(prefix: string, source: any) {
     const value = source[key]
     if (typeof value === 'string') {
       if (key === 'link') {
-        result[key] = prefix + value
+        result[key] = value.startsWith('/') ? prefix + value : value
       } else if (key === 'activeMatch') {
         result[key] = '^' + prefix + value
       } else {
@@ -175,6 +178,7 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
     },
 
     plugins: [
+      yaml(),
       ...process.env.MEILISEARCH_HOST ? [search({
         host: process.env.MEILISEARCH_HOST,
         readKey: process.env.MEILISEARCH_READ_KEY,
