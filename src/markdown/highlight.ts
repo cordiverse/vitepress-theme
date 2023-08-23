@@ -12,26 +12,22 @@ import MarkdownIt from 'markdown-it'
  *    [{ line: number, classes: string[] }]
  */
 const attrsToLines = (attrs: string): HtmlRendererOptions['lineOptions'] => {
-  const result: number[] = []
-  if (!attrs.trim()) {
-    return []
+  const result: { line: number; classes: string[] }[] = []
+  if (!attrs.trim()) return []
+
+  for (const attr of attrs.split(',')) {
+    const cap = /^(\d+)(?:-(\d+))?([a-z])?$/i.exec(attr.trim())
+    if (!cap) continue
+    const [, start, end = start, type] = cap
+    for (let i = +start; i <= +end; i++) {
+      result.push({
+        line: i,
+        classes: 'aA'.includes(type) ? ['diff', 'add'] : 'dD'.includes(type) ? ['diff', 'remove'] : ['highlighted'],
+      })
+    }
   }
-  attrs
-    .split(',')
-    .map((v) => v.split('-').map((v) => parseInt(v, 10)))
-    .forEach(([start, end]) => {
-      if (start && end) {
-        result.push(
-          ...Array.from({ length: end - start + 1 }, (_, i) => start + i),
-        )
-      } else {
-        result.push(start)
-      }
-    })
-  return result.map((v) => ({
-    line: v,
-    classes: ['highlighted'],
-  }))
+
+  return result
 }
 
 const alias = {
