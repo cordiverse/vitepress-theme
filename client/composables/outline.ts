@@ -10,15 +10,27 @@ export function getHeaders(pageOutline: DefaultTheme.Config['outline']) {
   document
     .querySelectorAll<HTMLHeadingElement>('h2, h3, h4, h5, h6')
     .forEach((el) => {
-      if (el.textContent && el.id) {
-        updatedHeaders.push({
-          level: +el.tagName[1],
-          title: el.innerText
-            .replace(/\s+#\s*$/, '')
-            .replace(/(\w+)\(.+?\)(\s|$).*/, '$1()'),
-          link: `#${el.id}`,
-        })
+      if (!el.textContent || !el.id) return
+      let innerText = ''
+      function pushText(el: HTMLElement) {
+        if (el.classList.contains('badge')) return
+        for (let i = 0; i < el.childNodes.length; i++) {
+          const node = el.childNodes[i]
+          if (node.nodeType === Node.TEXT_NODE) {
+            innerText += node.textContent
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            pushText(node as HTMLElement)
+          }
+        }
       }
+      pushText(el)
+      updatedHeaders.push({
+        level: +el.tagName[1],
+        title: innerText
+          .replace(/\s+#\s*$/, '')
+          .replace(/(\w+)\(.+?\)(\s|$).*/, '$1()'),
+        link: `#${el.id}`,
+      })
     })
   return resolveHeaders(updatedHeaders, pageOutline)
 }

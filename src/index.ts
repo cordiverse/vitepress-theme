@@ -130,7 +130,9 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
     highlight: await highlight('one-dark-pro'),
     ...config?.markdown,
     anchor: {
-      slugify: str => slugify(str.replace(/\(.+\)(?=\s|$)/, '')),
+      slugify: str => slugify(str
+        .replace(/\(.+\)(?=\s|$)/, '')
+        .replace(/ *<badge.+/, '')),
       ...config?.markdown?.anchor,
     },
     config(md) {
