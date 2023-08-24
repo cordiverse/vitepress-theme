@@ -1,7 +1,7 @@
 {
   "name": "@koishijs/vitepress",
   "description": "VitePress theme for Koishi projects",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "files": [
@@ -27,12 +27,12 @@
     "build": "tsc -b"
   },
   "devDependencies": {
-    "@types/node": "^18.16.9",
-    "typescript": "^5.0.4"
+    "@types/node": "^20.4.2",
+    "typescript": "^5.1.6"
   },
   "peerDependencies": {
     "@vueuse/core": "^9 || ^10",
-    "vitepress": "^1.0.0-alpha.73",
+    "vitepress": "^1.0.0-rc.4",
     "vue": "^3"
   },
   "dependencies": {
@@ -40,11 +40,11 @@
     "@mdit-vue/shared": "^0.12.0",
     "@meilisearch/instant-meilisearch": "^0.10.1",
     "axios": "^1.4.0",
-    "cosmokit": "^1.4.2",
+    "cosmokit": "^1.4.5",
     "el-scrollbar": "^2.0.0",
     "markdown-it-container": "^3.0.0",
-    "meilisearch": "^0.32.3",
-    "sass": "^1.62.1",
-    "vue-instantsearch": "^4.9.0"
+    "meilisearch": "^0.32.5",
+    "sass": "^1.63.6",
+    "vue-instantsearch": "^4.10.6"
   }
 }
