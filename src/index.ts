@@ -2,7 +2,7 @@ import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
-import { Dict, isNullable, valueMap } from 'cosmokit'
+import { Dict, isNullable, pick, valueMap } from 'cosmokit'
 import yaml from '@maikolib/vite-plugin-yaml'
 import search from './search'
 import crowdin from './crowdin'
@@ -36,6 +36,7 @@ export namespace ThemeConfig {
 interface Config extends UserConfig<ThemeConfig> {
   fallbackLocale?: string
   locales?: Dict
+  mixins?: Dict<Config>
 }
 
 const getRepoName = (title: string) => {
@@ -74,11 +75,11 @@ export const git = (() => {
   return { branch, sha }
 })()
 
-function transformLocale(prefix: string, source: any) {
+function transformLocale(prefix: string, source: any, oldPrefix: string) {
   if (typeof source !== 'object') {
     return source
   } else if (Array.isArray(source)) {
-    return source.map(item => transformLocale(prefix, item))
+    return source.map(item => transformLocale(prefix, item, oldPrefix))
   }
 
   const result: any = {}
@@ -86,19 +87,25 @@ function transformLocale(prefix: string, source: any) {
     const value = source[key]
     if (typeof value === 'string') {
       if (key === 'link') {
-        result[key] = value.startsWith('/') ? prefix + value : value
+        result[key] = value.startsWith('/') ? oldPrefix + prefix + value.slice(oldPrefix.length) : value
       } else if (key === 'activeMatch') {
-        result[key] = '^' + prefix + value
+        result[key] = '^' + oldPrefix + prefix + value.slice(oldPrefix.length)
       } else {
         result[key] = value
       }
     } else if (key === 'sidebar') {
-      result[key] = {}
-      for (const prop in value) {
-        result[key][prefix + prop] = transformLocale(prefix, value[prop])
+      if (Array.isArray(value)) {
+        result[key] = {
+          [oldPrefix + prefix + '/']: transformLocale(prefix, value, oldPrefix),
+        }
+      } else {
+        result[key] = {}
+        for (const prop in value) {
+          result[key][oldPrefix + prefix + prop.slice(oldPrefix.length)] = transformLocale(prefix, value[prop], oldPrefix)
+        }
       }
     } else {
-      result[key] = transformLocale(prefix, value)
+      result[key] = transformLocale(prefix, value, oldPrefix)
     }
   }
   return result
@@ -107,14 +114,24 @@ function transformLocale(prefix: string, source: any) {
 export const defineConfig = async (config: Config): Promise<Config> => ({
   ...config,
 
-  locales: config.locales ? valueMap(config.locales, (value, key) => {
-    return merge(locales[key], transformLocale('/' + key, value))
-  }) : null,
+  locales: config.locales && valueMap(config.locales, (value, locale) => {
+    let result = locales[locale]
+    if (config.mixins) {
+      for (const prefix in config.mixins) {
+        if (!config.mixins[prefix].locales[locale]) continue
+        result = merge(result, transformLocale(prefix, config.mixins[prefix].locales[locale], `/${locale}`))
+      }
+    }
+    result = merge(result, transformLocale(`/${locale}`, value, ''))
+    return result
+  }),
 
   themeConfig: {
     outline: [2, 3],
     ...locales[config.fallbackLocale || 'zh-CN'],
     ...config.themeConfig,
+
+    mixins: config.mixins && valueMap(config.mixins, value => pick(value, ['title'])),
 
     socialLinks: Object.entries({
       github: `https://github.com/${getRepoName(config.title)}`,
@@ -124,6 +141,22 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
     crowdin: process.env.CROWDIN_TOKEN
       ? await crowdin(+process.env.CROWDIN_PROJECT, +process.env.CROWDIN_BRANCH)
       : null,
+  },
+
+  transformPageData(pageData, ctx) {
+    const locale = (() => {
+      for (const locale in config.locales) {
+        if (pageData.filePath.startsWith(locale + '/')) return locale
+      }
+    })()
+    for (const prefix in config.mixins) {
+      const mixin = config.mixins[prefix]
+      Object.assign(mixin, mixin.locales[locale])
+      if (pageData.filePath.startsWith(locale + prefix)) {
+        pageData.titleTemplate ||= mixin.titleTemplate || mixin.title
+        pageData.description ||= mixin.description
+      }
+    }
   },
 
   markdown: {
@@ -164,6 +197,7 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
       dedupe: ['vue'],
       alias: {
         '@theme-default': 'vitepress/dist/client/theme-default',
+        './VPNavBarTitle.vue': resolve(__dirname, '../client/components/navbar-title.vue'),
         '../composables/edit-link': resolve(__dirname, '../client/composables/edit-link'),
         '../composables/outline': resolve(__dirname, '../client/composables/outline'),
       },
