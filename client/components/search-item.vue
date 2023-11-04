@@ -17,7 +17,7 @@ const title = computed(() =>
 </script>
 
 <template>
-  <a :href="withBase(props.item.link)">
+  <a :href="'/' + withBase(props.item.link)">
     <div class="search-item">
       <span class="item-type-icon">{{ item.anchorLink ? "＃" : "☰" }}</span>
       <div class="search-item-content">
