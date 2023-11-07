@@ -309,7 +309,12 @@ export async function buildDocs(root: string) {
 
       for (let index = 0; index < mdDocs.length; index++) {
         const mdDoc = mdDocs[index]
-        docs.push(buildDoc(mdDoc, i.toString() + '-' + index.toString(), relative(root, file.path)))
+        try {
+          docs.push(buildDoc(mdDoc, i.toString() + '-' + index.toString(), relative(root, file.path)))
+        } catch (error) {
+          console.log(mdDoc)
+          console.log(error)
+        }
       }
     }
   }
