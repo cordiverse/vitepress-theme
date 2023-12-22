@@ -4,6 +4,7 @@ import { MaybeRefOrGetter, toValue, useLocalStorage } from '@vueuse/core'
 import ElScrollbar from 'el-scrollbar'
 import VPDoc from '@theme-default/components/VPDoc.vue'
 import Badge from './components/badge.vue'
+import Spoiler from './components/spoiler.vue'
 import ChatMessage from './components/chat-message.vue'
 import PanelView from './components/chat-panel.vue'
 import TabSelect from './components/tab-select.vue'
@@ -66,6 +67,7 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
   enhanceApp(ctx) {
     ctx.app.component('ElScrollbar', ElScrollbar)
     ctx.app.component('Badge', Badge)
+    ctx.app.component('Spoiler', Spoiler)
     ctx.app.component('ChatMessage', ChatMessage)
     ctx.app.component('ChatPanel', PanelView)
     ctx.app.component('TabSelect', TabSelect)
