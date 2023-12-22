@@ -1,14 +1,13 @@
 import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
-import { resolve } from 'path'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
 import { Dict, isNullable, pick, valueMap } from 'cosmokit'
 import yaml from '@maikolib/vite-plugin-yaml'
 import search from './search'
 import crowdin from './crowdin'
 import container from './markdown/container'
-import highlight from './markdown/highlight'
 import fence from './markdown/fence'
+import { fileURLToPath } from 'url'
 
 const locales = {
   'de-DE': require('../locales/de-DE'),
@@ -160,8 +159,18 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
   },
 
   markdown: {
-    highlight: await highlight('one-dark-pro'),
+    // highlight: await highlight('one-dark-pro'),
     ...config?.markdown,
+    languageAlias: {
+      npm: 'sh',
+      yarn: 'sh',
+      podman: 'sh',
+      docker: 'sh',
+    },
+    theme: {
+      light: 'github-light',
+      dark: 'one-dark-pro',
+    },
     anchor: {
       slugify: str => slugify(str
         .replace(/\(.+\)(?=\s|$)/, '')
@@ -197,9 +206,9 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
       dedupe: ['vue'],
       alias: {
         '@theme-default': 'vitepress/dist/client/theme-default',
-        './VPNavBarTitle.vue': resolve(__dirname, '../client/components/navbar-title.vue'),
-        '../composables/edit-link': resolve(__dirname, '../client/composables/edit-link'),
-        '../composables/outline': resolve(__dirname, '../client/composables/outline'),
+        './VPNavBarTitle.vue': fileURLToPath(new URL('../client/components/navbar-title.vue', import.meta.url)),
+        '../composables/edit-link': fileURLToPath(new URL('../client/composables/edit-link', import.meta.url)),
+        '../composables/outline': fileURLToPath(new URL('../client/composables/outline', import.meta.url)),
       },
     },
 
