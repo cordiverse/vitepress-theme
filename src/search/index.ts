@@ -1,6 +1,6 @@
 import { MeiliSearch } from 'meilisearch'
 import { buildDocs } from './docs-builder'
-import { resolve } from 'path'
+import { fileURLToPath } from 'url'
 
 namespace SearchPlugin {
   export interface Options {
@@ -61,7 +61,7 @@ function SearchPlugin({ host, indexName, readKey = '', writeKey = '' }: SearchPl
         },
         resolve: {
           alias: {
-            './VPNavBarSearch.vue': resolve(__dirname, '../../client/components/navbar-search.vue'),
+            './VPNavBarSearch.vue': fileURLToPath(new URL('../client/components/navbar-search.vue', import.meta.url)),
           },
         },
       }

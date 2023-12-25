@@ -21,8 +21,8 @@ const title = computed(() =>
     <div class="search-item">
       <span class="item-type-icon">{{ item.anchorLink ? "＃" : "☰" }}</span>
       <div class="search-item-content">
-        <h3 class="preview"><AisHighlight attribute="sentence" :hit="item" /></h3>
         <p v-if="item.anchorLink" class="chapter-header">{{ title }}</p>
+        <h3 class="preview"><AisHighlight attribute="sentence" :hit="item" /></h3>
       </div>
       <span class="jump-icon">↪</span>
     </div>
@@ -52,29 +52,26 @@ const title = computed(() =>
   border-radius: 6px;
   display: flex;
 
-  border-color: var(--vp-custom-block-details-border);
-  color: var(--vp-custom-block-details-text);
-  background-color: var(--vp-custom-block-details-bg);
+  border-color: var(--vp-custom-block-info-border);
+  color: var(--vp-custom-block-info-text);
+  background-color: var(--vp-custom-block-info-bg);
 }
 
-.search-item p {
+.search-item .chapter-header {
   margin: 0px;
+  font-weight: 600;
   font-size: smaller;
-  color: var(--c-text-light-3);
+  color: var(--vp-c-text-2);
 }
 
 .search-item:hover {
-  color: #fff;
-  background: var(--vp-c-brand-dark);
+  color: var(--vp-button-brand-text);
+  background: var(--vp-button-brand-bg);
 }
 
-.search-item:hover > p {
-  color: #fff;
+.search-item:hover .chapter-header {
+  color: var(--vp-c-text-1);
 }
-
-/* .dark .search-item > p {
-  color: var(--c-text-light-2);
-} */
 
 .preview {
   white-space: nowrap;
@@ -88,7 +85,4 @@ const title = computed(() =>
   line-height: 18px;
 }
 
-.chapter-header {
-  font-weight: 600;
-}
 </style>
