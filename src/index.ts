@@ -3,6 +3,8 @@ import { mergeConfig } from 'vite'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
 import { Dict, isNullable, pick, valueMap } from 'cosmokit'
 import yaml from '@maikolib/vite-plugin-yaml'
+import unocss from 'unocss/vite'
+import mini from 'unocss/preset-mini'
 import search from './search'
 import crowdin from './crowdin'
 import container from './markdown/container'
@@ -224,6 +226,13 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
 
     plugins: [
       yaml(),
+      unocss({
+        presets: [
+          mini({
+            preflight: false,
+          }),
+        ],
+      }),
       ...process.env.MEILISEARCH_HOST ? [search({
         host: process.env.MEILISEARCH_HOST,
         readKey: process.env.MEILISEARCH_READ_KEY,

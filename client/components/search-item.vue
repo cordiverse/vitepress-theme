@@ -22,7 +22,7 @@ const title = computed(() =>
       <span class="item-type-icon">{{ item.anchorLink ? "＃" : "☰" }}</span>
       <div class="search-item-content">
         <p v-if="item.anchorLink" class="chapter-header">{{ title }}</p>
-        <h3 class="preview"><AisHighlight attribute="sentence" :hit="item" /></h3>
+        <h3 class="truncate"><AisHighlight attribute="sentence" :hit="item" /></h3>
       </div>
       <span class="jump-icon">↪</span>
     </div>
@@ -71,12 +71,6 @@ const title = computed(() =>
 
 .search-item:hover .chapter-header {
   color: var(--vp-c-text-1);
-}
-
-.preview {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .search-item-content {
