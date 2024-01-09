@@ -15,7 +15,7 @@ defineProps({
 
 <template>
   <span
-    class="badge"
+    class="badge ignore-header"
     :class="type"
     :style="{ verticalAlign: vertical }"
   >

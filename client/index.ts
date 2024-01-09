@@ -65,6 +65,8 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
   Layout,
   ...config,
   enhanceApp(ctx) {
+    DefaultTheme.enhanceApp(ctx)
+
     ctx.app.component('ElScrollbar', ElScrollbar)
     ctx.app.component('Badge', Badge)
     ctx.app.component('Spoiler', Spoiler)
@@ -77,7 +79,6 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
       layouts[key.toLowerCase()] = config.layouts[key]
     }
 
-    ctx.app.provide('NotFound', DefaultTheme.NotFound)
     ctx.app.provide(ThemeConfig, { layouts })
     ctx.app.provide(ClientConfig, createStorage({
       tabs: [],

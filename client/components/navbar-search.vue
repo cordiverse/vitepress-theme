@@ -178,7 +178,7 @@ body.dark .DocSearch-Button:hover {
     --docsearch-primary-color: var(--vp-c-brand);
     --docsearch-highlight-color: var(--docsearch-primary-color);
     --docsearch-text-color: var(--vp-c-text-1);
-    --docsearch-muted-color: #ebebeb99;
+    --docsearch-muted-color: var(--vp-c-text-3);
     --docsearch-searchbox-shadow: none;
     --docsearch-searchbox-focus-background: transparent;
     --docsearch-key-gradient: transparent;

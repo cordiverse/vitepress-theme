@@ -17,8 +17,7 @@
     </VPSidebar>
 
     <div class="VPContent" id="VPContent" :class="contentClass">
-      <NotFound v-if="route.component === NotFound" />
-      <component v-else :is="component">
+      <component :is="component">
         <template #doc-footer-before></template>
         <template #doc-before></template>
         <template #doc-after></template>
@@ -69,7 +68,6 @@ const { frontmatter } = useData()
 
 const config = inject(ThemeConfig)
 
-const NotFound = inject('NotFound')
 const component = computed(() => {
   return config.layouts[frontmatter.value.layout?.toLowerCase()] || config.layouts.default
 })

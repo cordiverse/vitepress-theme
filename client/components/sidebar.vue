@@ -32,7 +32,7 @@ watchPostEffect(async () => {
     <nav class="vp-sidebar-nav">
       <slot name="sidebar-nav-before" />
 
-      <div v-for="item in sidebarGroups" :key="item.text" class="group">
+      <div v-for="item in sidebarGroups" class="group">
         <VPSidebarItem :item="item" :depth="0" />
       </div>
 
@@ -60,7 +60,7 @@ watchPostEffect(async () => {
   transition: opacity 0.5s, transform 0.25s ease;
 }
 .vp-sidebar-view {
-  padding: 32px 0 64px;
+  padding: 32px 0;
   overflow-x: hidden;
 }
 .VPSidebar.open {
@@ -75,7 +75,6 @@ watchPostEffect(async () => {
 }
 @media (min-width: 960px) {
   .VPSidebar {
-    z-index: 1;
     width: var(--vp-sidebar-width);
     max-width: 100%;
     background-color: var(--vp-c-bg-alt);

@@ -1,36 +1,36 @@
-import { DefaultTheme } from 'vitepress'
 // @ts-ignore
-import { MenuItem, resolveHeaders, resolveTitle, useActiveAnchor } from '@theme-default/composables/outline'
+import { resolveHeaders, resolveTitle, useActiveAnchor } from '@theme-default/composables/outline'
 
 export { resolveHeaders, resolveTitle, useActiveAnchor }
 
-export function getHeaders(pageOutline: DefaultTheme.Config['outline']) {
-  if (pageOutline === false) return []
-  const updatedHeaders: MenuItem[] = []
-  document
-    .querySelectorAll<HTMLHeadingElement>('h2, h3, h4, h5, h6')
-    .forEach((el) => {
-      if (!el.textContent || !el.id) return
-      let innerText = ''
-      function pushText(el: HTMLElement) {
-        if (el.classList.contains('badge')) return
-        for (let i = 0; i < el.childNodes.length; i++) {
-          const node = el.childNodes[i]
-          if (node.nodeType === Node.TEXT_NODE) {
-            innerText += node.textContent
-          } else if (node.nodeType === Node.ELEMENT_NODE) {
-            pushText(node as HTMLElement)
-          }
-        }
+export function getHeaders(range) {
+  const headers = [
+    ...document.querySelectorAll('.VPDoc :where(h1,h2,h3,h4,h5,h6)'),
+  ]
+    .filter((el) => el.id && el.hasChildNodes())
+    .map((el) => {
+      const level = Number(el.tagName[1])
+      return {
+        element: el,
+        title: serializeHeader(el),
+        link: '#' + el.id,
+        level,
       }
-      pushText(el)
-      updatedHeaders.push({
-        level: +el.tagName[1],
-        title: innerText
-          .replace(/\s+#\s*$/, '')
-          .replace(/(\w+)\(.+?\)(\s|$).*/, '$1()'),
-        link: `#${el.id}`,
-      })
     })
-  return resolveHeaders(updatedHeaders, pageOutline)
+  return resolveHeaders(headers, range)
+}
+
+function serializeHeader(h) {
+  let ret = ''
+  for (const node of h.childNodes) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.classList.contains('badge') || node.classList.contains('header-anchor') || node.classList.contains('ignore-header')) {
+        continue
+      }
+      ret += node.textContent
+    } else if (node.nodeType === Node.TEXT_NODE) {
+      ret += node.textContent.replace(/(\w+)\(.+?\)(\s|$).*/, '$1()')
+    }
+  }
+  return ret.trim()
 }
