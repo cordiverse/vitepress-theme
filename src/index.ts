@@ -1,7 +1,7 @@
 import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
-import { Dict, isNullable, pick, valueMap } from 'cosmokit'
+import { Dict, isNullable, valueMap } from 'cosmokit'
 import yaml from '@maikolib/vite-plugin-yaml'
 import unocss from 'unocss/vite'
 import mini from 'unocss/preset-mini'
@@ -37,7 +37,6 @@ export namespace ThemeConfig {
 interface Config extends UserConfig<ThemeConfig> {
   fallbackLocale?: string
   locales?: Dict
-  mixins?: Dict<Config>
 }
 
 const getRepoName = (title: string) => {
@@ -76,11 +75,11 @@ export const git = (() => {
   return { branch, sha }
 })()
 
-function transformLocale(prefix: string, source: any, oldPrefix: string) {
+function transformLocale(prefix: string, source: any) {
   if (typeof source !== 'object') {
     return source
   } else if (Array.isArray(source)) {
-    return source.map(item => transformLocale(prefix, item, oldPrefix))
+    return source.map(item => transformLocale(prefix, item))
   }
 
   const result: any = {}
@@ -88,25 +87,25 @@ function transformLocale(prefix: string, source: any, oldPrefix: string) {
     const value = source[key]
     if (typeof value === 'string') {
       if (key === 'link') {
-        result[key] = value.startsWith('/') ? oldPrefix + prefix + value.slice(oldPrefix.length) : value
+        result[key] = value.startsWith('/') ? prefix + value : value
       } else if (key === 'activeMatch') {
-        result[key] = '^' + oldPrefix + prefix + value.slice(oldPrefix.length)
+        result[key] = '^' + prefix + value
       } else {
         result[key] = value
       }
     } else if (key === 'sidebar') {
       if (Array.isArray(value)) {
         result[key] = {
-          [oldPrefix + prefix + '/']: transformLocale(prefix, value, oldPrefix),
+          [prefix + '/']: transformLocale(prefix, value),
         }
       } else {
         result[key] = {}
         for (const prop in value) {
-          result[key][oldPrefix + prefix + prop.slice(oldPrefix.length)] = transformLocale(prefix, value[prop], oldPrefix)
+          result[key][prefix + prop] = transformLocale(prefix, value[prop])
         }
       }
     } else {
-      result[key] = transformLocale(prefix, value, oldPrefix)
+      result[key] = transformLocale(prefix, value)
     }
   }
   return result
@@ -116,23 +115,13 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
   ...config,
 
   locales: config.locales && valueMap(config.locales, (value, locale) => {
-    let result = locales[locale]
-    if (config.mixins) {
-      for (const prefix in config.mixins) {
-        if (!config.mixins[prefix].locales[locale]) continue
-        result = merge(result, transformLocale(prefix, config.mixins[prefix].locales[locale], `/${locale}`))
-      }
-    }
-    result = merge(result, transformLocale(`/${locale}`, value, ''))
-    return result
+    return merge(locales[locale], transformLocale(`/${locale}`, value))
   }),
 
   themeConfig: {
     outline: [2, 3],
     ...locales[config.fallbackLocale || 'zh-CN'],
     ...config.themeConfig,
-
-    mixins: config.mixins && valueMap(config.mixins, value => pick(value, ['title'])),
 
     socialLinks: Object.entries({
       github: `https://github.com/${getRepoName(config.title)}`,
@@ -142,22 +131,6 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
     crowdin: process.env.CROWDIN_TOKEN
       ? await crowdin(+process.env.CROWDIN_PROJECT, +process.env.CROWDIN_BRANCH)
       : null,
-  },
-
-  transformPageData(pageData, ctx) {
-    const locale = (() => {
-      for (const locale in config.locales) {
-        if (pageData.filePath.startsWith(locale + '/')) return locale
-      }
-    })()
-    for (const prefix in config.mixins) {
-      const mixin = config.mixins[prefix]
-      Object.assign(mixin, mixin.locales[locale])
-      if (pageData.filePath.startsWith(locale + prefix)) {
-        pageData.titleTemplate ||= mixin.titleTemplate || mixin.title
-        pageData.description ||= mixin.description
-      }
-    }
   },
 
   markdown: {

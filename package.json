@@ -1,7 +1,7 @@
 {
-  "name": "@koishijs/vitepress",
-  "description": "VitePress theme for Koishi projects",
-  "version": "3.2.1",
+  "name": "@cordisjs/vitepress",
+  "description": "VitePress theme for Cordis projects",
+  "version": "3.2.4",
   "type": "module",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -14,12 +14,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koishijs/vitepress-theme.git"
+    "url": "git+https://github.com/cordisjs/vitepress-theme.git"
   },
   "bugs": {
-    "url": "https://github.com/koishijs/vitepress-theme/issues"
+    "url": "https://github.com/cordisjs/vitepress-theme/issues"
   },
-  "homepage": "https://koishi.chat/",
+  "homepage": "https://github.com/cordisjs/vitepress-theme",
   "keywords": [
     "vitepress",
     "theme"
@@ -30,11 +30,11 @@
   "devDependencies": {
     "@types/node": "^20.10.2",
     "typescript": "^5.3.2",
-    "vitepress": "^1.0.0-rc.31"
+    "vitepress": "^1.0.0-rc.36"
   },
   "peerDependencies": {
     "@vueuse/core": ">=10",
-    "vitepress": "^1.0.0-rc.31",
+    "vitepress": "^1.0.0-rc.36",
     "vue": "^3"
   },
   "dependencies": {
