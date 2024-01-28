@@ -20,11 +20,18 @@ export function getHeaders(range) {
   return resolveHeaders(headers, range)
 }
 
+const blacklist = [
+  'badge',
+  'VPBadge',
+  'header-anchor',
+  'ignore-header',
+]
+
 function serializeHeader(h) {
   let ret = ''
   for (const node of h.childNodes) {
     if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.classList.contains('badge') || node.classList.contains('header-anchor') || node.classList.contains('ignore-header')) {
+      if (blacklist.some(name => node.classList.contains(name))) {
         continue
       }
       ret += node.textContent
