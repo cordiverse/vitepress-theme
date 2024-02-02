@@ -147,9 +147,16 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
       dark: 'one-dark-pro',
     },
     anchor: {
-      slugify: str => slugify(str
-        .replace(/\(.+\)(?=\s|$)/, '')
-        .replace(/ *<badge.+/, '')),
+      // https://github.com/vuejs/vitepress/issues/3511#issuecomment-1923139500
+      getTokensText(tokens) {
+        let text = ''
+        for (const t of tokens) {
+          if (t.type === 'text' || t.type === 'code_inline') text += t.content
+          if (t.type === 'html_inline' && /<badge/i.test(t.content)) return text
+        }
+        return text
+      },
+      slugify: str => slugify(str.replace(/\(.+\)(?=\s|$)/, '')),
       ...config?.markdown?.anchor,
     },
     config(md) {

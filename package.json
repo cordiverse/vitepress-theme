@@ -1,7 +1,7 @@
 {
   "name": "@cordisjs/vitepress",
   "description": "VitePress theme for Cordis projects",
-  "version": "3.2.4",
+  "version": "3.2.6",
   "type": "module",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@maikolib/vite-plugin-yaml": "^1.0.1",
-    "@mdit-vue/shared": "^0.12.1",
+    "@mdit-vue/shared": "^2.0.0",
     "@meilisearch/instant-meilisearch": "^0.10.1",
     "axios": "^1.6.2",
     "cosmokit": "^1.5.2",
