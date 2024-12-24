@@ -10,7 +10,7 @@ import TabSelect from './components/tab-select.vue'
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 
-import 'virtual:uno.css'
+import 'uno.css'
 
 import './styles/aside.scss'
 import './styles/code.scss'

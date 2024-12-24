@@ -4,7 +4,7 @@ import { htmlEscape, slugify } from '@mdit-vue/shared'
 import { Dict, isNullable, valueMap } from 'cosmokit'
 import yaml from '@maikolib/vite-plugin-yaml'
 import unocss from 'unocss/vite'
-import mini from 'unocss/preset-mini'
+import uno from 'unocss/preset-uno'
 import search from './search'
 import crowdin from './crowdin'
 import container from './markdown/container'
@@ -188,7 +188,6 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
       dedupe: ['vue'],
       alias: {
         '@theme-default': 'vitepress/dist/client/theme-default',
-        './VPNavBarTitle.vue': fileURLToPath(new URL('../client/components/navbar-title.vue', import.meta.url)),
         '../composables/edit-link': fileURLToPath(new URL('../client/composables/edit-link', import.meta.url)),
         '../composables/outline': fileURLToPath(new URL('../client/composables/outline', import.meta.url)),
       },
@@ -204,11 +203,19 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
       },
     },
 
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
+
     plugins: [
       yaml(),
       unocss({
         presets: [
-          mini({
+          uno({
             preflight: false,
           }),
         ],

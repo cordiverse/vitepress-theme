@@ -23,6 +23,10 @@
   div[class*='language-'] + div[class*='language-'] {
     margin-top: 0;
   }
+
+  sub, sup {
+    line-height: 0;
+  }
 }
 
 .vp-doc blockquote > p {
