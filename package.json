@@ -1,7 +1,7 @@
 {
   "name": "@cordisjs/vitepress",
   "description": "VitePress theme for Cordis projects",
-  "version": "3.2.7",
+  "version": "3.3.2",
   "type": "module",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -28,28 +28,29 @@
     "build": "tsc -b"
   },
   "devDependencies": {
-    "@types/node": "^20.10.2",
-    "typescript": "^5.3.2",
-    "vitepress": "^1.0.0-rc.36"
+    "@types/node": "^22.7.5",
+    "typescript": "^5.6.2",
+    "vitepress": "^1.5.0"
   },
   "peerDependencies": {
-    "@vueuse/core": ">=10",
-    "vite": "*",
-    "vitepress": "^1.0.0-rc.36",
-    "vue": "^3"
+    "vitepress": "^1.5.0"
   },
   "dependencies": {
-    "@maikolib/vite-plugin-yaml": "^1.0.1",
-    "@mdit-vue/shared": "^2.0.0",
-    "@meilisearch/instant-meilisearch": "^0.10.1",
-    "axios": "^1.6.2",
-    "cosmokit": "^1.5.2",
+    "@maikolib/vite-plugin-yaml": "^1.1.0",
+    "@mdit-vue/shared": "^2.1.3",
+    "@meilisearch/instant-meilisearch": "^0.10.2-turbo-migration.0",
+    "@vueuse/core": ">=10",
+    "algoliasearch": "^4.24.0",
+    "axios": "^1.7.9",
+    "cosmokit": "^1.6.3",
     "el-scrollbar": "^2.0.0",
     "markdown-it-container": "^3.0.0",
     "meilisearch": "^0.32.5",
-    "sass": "^1.69.5",
-    "shikiji": "^0.9.11",
-    "unocss": "^0.58.1",
-    "vue-instantsearch": "^4.12.1"
+    "sass": "^1.82.0",
+    "shikiji": "^0.10.2",
+    "unocss": "^0.65.1",
+    "vite": "*",
+    "vue": "*",
+    "vue-instantsearch": "^4.19.11"
   }
 }
