@@ -43,12 +43,6 @@
   }
 }
 
-@media (min-width: 960px) {
-  .VPNavBar.has-sidebar .title {
-    background-color: var(--vp-sidebar-bg-color);
-  }
-}
-
 .VPDocAsideOutline .outline-link {
   line-height: 28px;
   font-size: 13px;
@@ -91,7 +85,7 @@
 }
 
 @media (min-width: 960px) {
-  .VPNavBar .divider-line {
+  .VPNav .VPNavBar .divider-line {
     background-color: transparent !important;
   
     &::before {

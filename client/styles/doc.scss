@@ -89,15 +89,5 @@ html.dark .light-only {
 
 mjx-container {
   font-size: 0.95em;
-}
-
-p, li {
-  mjx-container {
-    display: inline-flex;
-    vertical-align: middle;
-  
-    > svg {
-      margin-top: -4px;
-    }
-  }
+  overflow-x: visible;
 }
