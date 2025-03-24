@@ -27,55 +27,18 @@
   sub, sup {
     line-height: 0;
   }
-}
 
-.vp-doc blockquote > p {
-  font-size: 15px;
-  line-height: 1.7;
+  blockquote > p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
 }
 
 .vp-doc .custom-block {
-  font-size: 15px;
-  padding: 1px 1.5rem;
-  border-width: 0;
-  border-radius: 0;
-  border-left-width: 4px;
-  border-left-style: solid;
-  position: relative;
+  padding-top: 8px;
 
   .custom-block-title {
     display: none;
-  }
-
-  p {
-    margin: 1rem 0;
-    line-height: 1.7;
-  }
-
-  div[class*='language-'] {
-    margin: 1rem 0;
-  }
-
-  &::before {
-    content: "!";
-    position: absolute;
-    top: 20px;
-    left: -12px;
-    color: #fff;
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-    text-align: center;
-    line-height: 21px;
-    font-weight: 700;
-    font-family: Dosis, Source Sans Pro, Helvetica Neue, Arial, sans-serif;
-    font-size: 14px;
-  }
-
-  @each $type in info, tip, warning, danger {
-    &.#{$type}::before {
-      background-color: var(--vp-custom-block-#{$type}-border);
-    }
   }
 }
 

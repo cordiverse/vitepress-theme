@@ -78,6 +78,12 @@
   }
 }
 
+@media (min-width: 960px) {
+  .VPNavBar.has-sidebar .title {
+    background-color: var(--vp-sidebar-bg-color);
+  }
+}
+
 @media (max-width: 960px) {
   .VPNav .VPNavBar .divider-line {
     background-color: var(--vp-c-border);
