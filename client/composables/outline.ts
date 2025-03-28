@@ -21,22 +21,24 @@ export function getHeaders(range) {
 }
 
 const blacklist = [
-  'badge',
   'VPBadge',
   'header-anchor',
   'ignore-header',
 ]
 
-function serializeHeader(h) {
+function serializeHeader(h: Element) {
   let ret = ''
   for (const node of h.childNodes) {
     if (node.nodeType === Node.ELEMENT_NODE) {
-      if (blacklist.some(name => node.classList.contains(name))) {
+      if (blacklist.some(name => (node as Element).classList.contains(name))) {
         continue
       }
       ret += node.textContent
     } else if (node.nodeType === Node.TEXT_NODE) {
-      ret += node.textContent.replace(/(\w+)\(.+?\)(\s|$).*/, '$1()')
+      ret += node.textContent.replace(/(\S+)\(.+?\)(\s|$).*/, (_, $1) => {
+        if (/^'.+'$/.test($1)) return $1
+        return $1 + '()'
+      })
     }
   }
   return ret.trim()
