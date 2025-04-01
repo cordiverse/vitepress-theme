@@ -1,6 +1,6 @@
-import { Theme } from 'vitepress'
-import { Component, computed, inject, InjectionKey, reactive } from 'vue'
-import { MaybeRefOrGetter, toValue, useLocalStorage } from '@vueuse/core'
+import { EnhanceAppContext, Theme } from 'vitepress'
+import { Component, computed, inject, InjectionKey, reactive, toValue } from 'vue'
+import { MaybeRefOrGetter, useLocalStorage } from '@vueuse/core'
 import ElScrollbar from 'el-scrollbar'
 import VPDoc from '@theme-default/components/VPDoc.vue'
 import Spoiler from './components/spoiler.vue'
@@ -36,10 +36,8 @@ export function useActiveTab(keys: MaybeRefOrGetter<string[]>) {
 }
 
 export interface ThemeConfig {
-  Layout?: Component
-  NotFount?: Component
   layouts?: Record<string, Component>
-  enhanceApp?: Function
+  enhanceApp?: (ctx: EnhanceAppContext) => void
 }
 
 export interface ClientConfig {
@@ -62,12 +60,9 @@ function createStorage(initial: ClientConfig) {
 export { Layout }
 
 export const defineTheme = (config: ThemeConfig = {}): Theme => ({
-  ...DefaultTheme,
+  extends: DefaultTheme,
   Layout,
-  ...config,
   enhanceApp(ctx) {
-    DefaultTheme.enhanceApp(ctx)
-
     ctx.app.component('ElScrollbar', ElScrollbar)
     ctx.app.component('Spoiler', Spoiler)
     ctx.app.component('ChatMessage', ChatMessage)

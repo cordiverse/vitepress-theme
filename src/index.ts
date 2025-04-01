@@ -137,6 +137,8 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
     languageAlias: {
       npm: 'sh',
       yarn: 'sh',
+      pnpm: 'sh',
+      bun: 'sh',
       podman: 'sh',
       docker: 'sh',
     },
