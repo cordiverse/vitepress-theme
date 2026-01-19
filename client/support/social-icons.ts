@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 // @ts-ignore
-import { icons as _ } from '@theme-default/support/socialIcons.js'
+import { icons as _ } from 'vitepress/dist/client/theme-default/support/socialIcons.js'
 
 export const icons = {
   ..._,

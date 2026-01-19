@@ -86,7 +86,7 @@
 
 @media (max-width: 960px) {
   .VPNav .VPNavBar .divider-line {
-    background-color: var(--vp-c-border);
+    background-color: var(--vp-c-border) !important;
   }
 }
 

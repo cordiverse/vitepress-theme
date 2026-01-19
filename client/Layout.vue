@@ -1,122 +1,90 @@
-<template>
-  <div class="Layout" :class="layoutClass">
-    <VPSkipLink />
-    <VPBackdrop class="backdrop" :show="isSidebarOpen" @click="closeSidebar" />
-    <VPNav>
-      <template #nav-bar-title-before></template>
-      <template #nav-bar-title-after></template>
-      <template #nav-bar-content-before></template>
-      <template #nav-bar-content-after></template>
-      <template #nav-screen-content-before></template>
-      <template #nav-screen-content-after></template>
-    </VPNav>
-    <VPLocalNav :open="isSidebarOpen" @open-menu="openSidebar" />
-    <VPSidebar :open="isSidebarOpen">
-      <template #sidebar-nav-before><slot name="sidebar-nav-before"></slot></template>
-      <template #sidebar-nav-after><slot name="sidebar-nav-after"></slot></template>
-    </VPSidebar>
-
-    <div class="VPContent" id="VPContent" :class="contentClass">
-      <component :is="component">
-        <template #doc-footer-before></template>
-        <template #doc-before></template>
-        <template #doc-after></template>
-
-        <template #aside-top></template>
-        <template #aside-bottom></template>
-        <template #aside-outline-before></template>
-        <template #aside-outline-after></template>
-        <template #aside-ads-before></template>
-        <template #aside-ads-after></template>
-      </component>
-    </div>
-
-    <VPFooter />
-  </div>
-</template>
-
 <script setup lang="ts">
-
-import { computed, inject, provide, watch } from 'vue'
-import { useData, useRoute } from 'vitepress'
-// @ts-ignore
-import { useSidebar, useCloseSidebarOnEscape } from '@theme-default/composables/sidebar.js'
-import VPSkipLink from '@theme-default/components/VPSkipLink.vue'
-import VPBackdrop from '@theme-default/components/VPBackdrop.vue'
-import VPNav from '@theme-default/components/VPNav.vue'
-import VPLocalNav from '@theme-default/components/VPLocalNav.vue'
-import VPFooter from '@theme-default/components/VPFooter.vue'
+import VPBackdrop from 'vitepress/dist/client/theme-default/components/VPBackdrop.vue'
+import VPContent from 'vitepress/dist/client/theme-default/components/VPContent.vue'
+import VPFooter from 'vitepress/dist/client/theme-default/components/VPFooter.vue'
+import VPLocalNav from 'vitepress/dist/client/theme-default/components/VPLocalNav.vue'
+import VPNav from 'vitepress/dist/client/theme-default/components/VPNav.vue'
 import VPSidebar from './components/sidebar.vue'
-import { ThemeConfig } from '.'
+import VPSkipLink from 'vitepress/dist/client/theme-default/components/VPSkipLink.vue'
+import { useData } from 'vitepress/dist/client/theme-default/composables/data.js'
+import { registerWatchers } from 'vitepress/dist/client/theme-default/composables/layout.js'
+import { useSidebarControl } from 'vitepress/dist/client/theme-default/composables/sidebar.js'
 
 const {
   isOpen: isSidebarOpen,
   open: openSidebar,
   close: closeSidebar,
-  hasSidebar,
-} = useSidebar()
+} = useSidebarControl()
 
-const route = useRoute()
-watch(() => route.path, closeSidebar)
-
-useCloseSidebarOnEscape(isSidebarOpen, closeSidebar)
-
-provide('close-sidebar', closeSidebar)
-provide('is-sidebar-open', isSidebarOpen)
+registerWatchers({ closeSidebar })
 
 const { frontmatter } = useData()
 
-const config = inject(ThemeConfig)
-
-const component = computed(() => {
-  return config.layouts[frontmatter.value.layout?.toLowerCase()] || config.layouts.default
-})
-
-const contentClass = computed(() => ({
-  'has-sidebar': hasSidebar.value,
-}))
-
-const layoutClass = computed(() => ({
-  [`layout-${frontmatter.value.layout}`]: frontmatter.value.layout,
-}))
-
 </script>
 
-<style scoped>
+<template>
+  <div
+    v-if="frontmatter.layout !== false"
+    class="Layout"
+    :class="frontmatter.pageClass"
+  >
+    <slot name="layout-top" />
+    <VPSkipLink />
+    <VPBackdrop class="backdrop" :show="isSidebarOpen" @click="closeSidebar" />
+    <VPNav>
+      <template #nav-bar-title-before><slot name="nav-bar-title-before" /></template>
+      <template #nav-bar-title-after><slot name="nav-bar-title-after" /></template>
+      <template #nav-bar-content-before><slot name="nav-bar-content-before" /></template>
+      <template #nav-bar-content-after><slot name="nav-bar-content-after" /></template>
+      <template #nav-screen-content-before><slot name="nav-screen-content-before" /></template>
+      <template #nav-screen-content-after><slot name="nav-screen-content-after" /></template>
+    </VPNav>
+    <VPLocalNav :open="isSidebarOpen" @open-menu="openSidebar" />
 
+    <VPSidebar :open="isSidebarOpen">
+      <template #sidebar-nav-before><slot name="sidebar-nav-before" /></template>
+      <template #sidebar-nav-after><slot name="sidebar-nav-after" /></template>
+    </VPSidebar>
+
+    <VPContent>
+      <template #page-top><slot name="page-top" /></template>
+      <template #page-bottom><slot name="page-bottom" /></template>
+
+      <template #not-found><slot name="not-found" /></template>
+      <template #home-hero-before><slot name="home-hero-before" /></template>
+      <template #home-hero-info-before><slot name="home-hero-info-before" /></template>
+      <template #home-hero-info><slot name="home-hero-info" /></template>
+      <template #home-hero-info-after><slot name="home-hero-info-after" /></template>
+      <template #home-hero-actions-after><slot name="home-hero-actions-after" /></template>
+      <template #home-hero-image><slot name="home-hero-image" /></template>
+      <template #home-hero-after><slot name="home-hero-after" /></template>
+      <template #home-features-before><slot name="home-features-before" /></template>
+      <template #home-features-after><slot name="home-features-after" /></template>
+
+      <template #doc-footer-before><slot name="doc-footer-before" /></template>
+      <template #doc-before><slot name="doc-before" /></template>
+      <template #doc-after><slot name="doc-after" /></template>
+      <template #doc-top><slot name="doc-top" /></template>
+      <template #doc-bottom><slot name="doc-bottom" /></template>
+
+      <template #aside-top><slot name="aside-top" /></template>
+      <template #aside-bottom><slot name="aside-bottom" /></template>
+      <template #aside-outline-before><slot name="aside-outline-before" /></template>
+      <template #aside-outline-after><slot name="aside-outline-after" /></template>
+      <template #aside-ads-before><slot name="aside-ads-before" /></template>
+      <template #aside-ads-after><slot name="aside-ads-after" /></template>
+    </VPContent>
+
+    <VPFooter />
+    <slot name="layout-bottom" />
+  </div>
+  <Content v-else />
+</template>
+
+<style scoped>
 .Layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
-.VPContent {
-  flex-grow: 1;
-  flex-shrink: 0;
-  margin: var(--vp-layout-top-height, 0px) auto 0;
-  width: 100%;
-}
-
-.VPContent.has-sidebar {
-  margin: 0;
-}
-
-@media (min-width: 960px) {
-  .VPContent {
-    padding-top: var(--vp-nav-height);
-  }
-
-  .VPContent.has-sidebar {
-    margin: var(--vp-layout-top-height, 0px) 0 0;
-    padding-left: var(--vp-sidebar-width);
-  }
-}
-
-@media (min-width: 1440px) {
-  .VPContent.has-sidebar {
-    padding-right: calc((100vw - var(--vp-layout-max-width)) / 2);
-    padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width));
-  }
-}
-
 </style>

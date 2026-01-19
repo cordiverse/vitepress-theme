@@ -1,5 +1,5 @@
 // @ts-ignore
-import { resolveHeaders, resolveTitle, useActiveAnchor } from '@theme-default/composables/outline'
+import { resolveHeaders, resolveTitle, useActiveAnchor } from 'vitepress/dist/client/theme-default/composables/outline'
 
 export { resolveHeaders, resolveTitle, useActiveAnchor }
 

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { nextTick, ref, watchPostEffect } from 'vue'
-// @ts-ignore
-import { useSidebar } from '@theme-default/composables/sidebar.js'
-import VPSidebarItem from '@theme-default/components/VPSidebarItem.vue'
-const { hasSidebar, sidebarGroups } = useSidebar()
+import { useLayout } from 'vitepress/dist/client/theme-default/composables/layout.js'
+import VPSidebarItem from 'vitepress/dist/client/theme-default/components/VPSidebarItem.vue'
+const { hasSidebar, sidebarGroups } = useLayout()
 const props = defineProps<{
   open: boolean
 }>()
