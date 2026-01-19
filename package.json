@@ -1,7 +1,8 @@
 {
   "name": "@cordisjs/vitepress",
   "description": "VitePress theme for Cordis projects",
-  "version": "4.1.3",
+  "version": "4.2.0",
+  "packageManager": "yarn@4.12.0",
   "type": "module",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -29,7 +30,9 @@
   },
   "devDependencies": {
     "@types/node": "^25.0.9",
+    "markdown-it": "^14.1.0",
     "typescript": "^5.9.3",
+    "vite": "^7.3.1",
     "vitepress": "^2.0.0-alpha.15"
   },
   "peerDependencies": {
@@ -39,17 +42,13 @@
   "dependencies": {
     "@maikolib/vite-plugin-yaml": "^1.1.1",
     "@mdit-vue/shared": "^3.0.2",
-    "@meilisearch/instant-meilisearch": "^0.29.1",
     "@vueuse/core": ">=13",
-    "algoliasearch": "^5.46.3",
     "axios": "^1.13.2",
     "cosmokit": "^1.8.1",
     "el-scrollbar": "^2.0.0",
     "markdown-it-container": "^4.0.0",
-    "meilisearch": "^0.55.0",
     "sass": "^1.97.2",
     "unocss": "^66.5.12",
-    "vue": "*",
-    "vue-instantsearch": "^4.22.8"
+    "vue": "*"
   }
 }
