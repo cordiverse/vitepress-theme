@@ -5,10 +5,13 @@ import { Dict, isNullable, valueMap } from 'cosmokit'
 import yaml from '@maikolib/vite-plugin-yaml'
 import unocss from 'unocss/vite'
 import mini from 'unocss/preset-mini'
-import crowdin from './crowdin'
-import container from './markdown/container'
-import fence from './markdown/fence'
+import crowdin from './crowdin/index.js'
+import container from './markdown/container.js'
+import fence from './markdown/fence.js'
 import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
 
 const locales = {
   'de-DE': require('../locales/de-DE'),

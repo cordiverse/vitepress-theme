@@ -33,15 +33,15 @@
   }
 }
 
-@media (min-width: 1440px) {
-  .VPNavBar.has-sidebar .container .content {
-    padding-right: 0;
+// @media (min-width: 1440px) {
+//   .VPNavBar.has-sidebar .container .content {
+//     padding-right: 0;
 
-    .content-body {
-      padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
-    }
-  }
-}
+//     .content-body {
+//       padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
+//     }
+//   }
+// }
 
 .VPDocAsideOutline .outline-link {
   line-height: 28px;
