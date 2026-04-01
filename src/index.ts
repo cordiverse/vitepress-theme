@@ -121,6 +121,8 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
       },
     },
 
+    fallbackLocale: config.locales ? (config.fallbackLocale || 'zh-CN') : undefined,
+
     ...locales[config.fallbackLocale || 'zh-CN'],
     ...config.themeConfig,
 

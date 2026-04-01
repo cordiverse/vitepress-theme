@@ -1,4 +1,4 @@
-import { EnhanceAppContext, Theme } from 'vitepress'
+import { EnhanceAppContext, Theme, inBrowser } from 'vitepress'
 import { Component, computed, inject, InjectionKey, MaybeRefOrGetter, reactive, toValue } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import ElScrollbar from 'el-scrollbar'
@@ -69,7 +69,7 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
     ctx.app.component('ChatPanel', PanelView)
     ctx.app.component('TabSelect', TabSelect)
 
-    const layouts = { default: VPDoc }
+    const layouts: Record<string, any> = { default: VPDoc }
     for (const key in config.layouts) {
       layouts[key.toLowerCase()] = config.layouts[key]
     }
@@ -78,6 +78,17 @@ export const defineTheme = (config: ThemeConfig = {}): Theme => ({
     ctx.app.provide(ClientConfig, createStorage({
       tabs: [],
     }))
+
+    if (inBrowser) {
+      const fallbackLocale = ctx.siteData.value.themeConfig.fallbackLocale
+      if (fallbackLocale) {
+        const locales = Object.keys(ctx.siteData.value.locales)
+        const { pathname } = window.location
+        if (!locales.some(locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`)) {
+          ctx.router.go(`/${fallbackLocale}${pathname}`)
+        }
+      }
+    }
 
     config.enhanceApp?.(ctx)
   },

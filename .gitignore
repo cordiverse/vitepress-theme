@@ -11,9 +11,12 @@ yarn-debug.log
 yarn-error.log
 package-lock.json
 
+CLAUDE.md
+
 .DS_Store
 .idea
 .vscode
+.claude
 *.suo
 *.ntvs*
 *.njsproj
