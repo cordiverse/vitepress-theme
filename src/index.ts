@@ -2,6 +2,7 @@ import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
 import { Dict, isNullable, valueMap } from 'cosmokit'
+import llms from 'vitepress-plugin-llms'
 import yaml from '@maikolib/vite-plugin-yaml'
 import unocss from 'unocss/vite'
 import mini from 'unocss/preset-mini'
@@ -13,7 +14,7 @@ import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 
-const locales = {
+const locales: Record<string, any> = {
   'de-DE': require('../locales/de-DE'),
   'en-US': require('../locales/en-US'),
   'fr-FR': require('../locales/fr-FR'),
@@ -56,7 +57,7 @@ function merge(a: any, b: any) {
   } else if (typeof b !== 'object') {
     return b
   }
-  const result = {}
+  const result: any = {}
   for (const key in { ...a, ...b }) {
     result[key] = merge(a[key], b[key])
   }
@@ -69,7 +70,7 @@ export const git = (() => {
   return { branch, sha }
 })()
 
-function transformLocale(prefix: string, source: any) {
+function transformLocale(prefix: string, source: any): any {
   if (typeof source !== 'object') {
     return source
   } else if (Array.isArray(source)) {
@@ -127,12 +128,12 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
     ...config.themeConfig,
 
     socialLinks: Object.entries({
-      github: `https://github.com/${getRepoName(config.title)}`,
-      ...config.themeConfig.socialLinks,
+      github: `https://github.com/${getRepoName(config.title!)}`,
+      ...config.themeConfig?.socialLinks,
     }).map(([icon, link]) => ({ icon, link })),
 
     crowdin: process.env.CROWDIN_TOKEN
-      ? await crowdin(+process.env.CROWDIN_PROJECT, +process.env.CROWDIN_BRANCH)
+      ? await crowdin(+process.env.CROWDIN_PROJECT!, +process.env.CROWDIN_BRANCH!)
       : null,
   },
 
@@ -168,12 +169,12 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
       md.use(fence)
       md.use(container, {
         type: 'tabs',
-        before: info => `<tab-select class="${info}">`,
+        before: (info: string) => `<tab-select class="${info}">`,
         after: () => '</tab-select>',
       })
       md.use(container, {
         type: 'tab',
-        before(info) {
+        before(info: string) {
           const name = info.split(/\s+/, 1)[0]
           const title = info.slice(name.length).trim()
           let result = `<template #tab-${name}>`
@@ -225,6 +226,7 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
           }),
         ],
       }),
+      llms(),
     ],
   }, config?.vite || {}),
 })

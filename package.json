@@ -49,6 +49,7 @@
     "markdown-it-container": "^4.0.0",
     "sass": "^1.97.2",
     "unocss": "^66.5.12",
+    "vitepress-plugin-llms": "^1.12.0",
     "vue": "*"
   }
 }
