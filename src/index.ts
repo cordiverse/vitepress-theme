@@ -226,7 +226,9 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
           }),
         ],
       }),
-      llms(),
+      llms({
+        workDir: config.locales ? (config.fallbackLocale || 'zh-CN') : undefined,
+      }),
     ],
   }, config?.vite || {}),
 })
