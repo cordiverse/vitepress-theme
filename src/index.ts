@@ -2,8 +2,10 @@ import { DefaultTheme, UserConfig } from 'vitepress'
 import { mergeConfig } from 'vite'
 import { htmlEscape, slugify } from '@mdit-vue/shared'
 import { Dict, isNullable, valueMap } from 'cosmokit'
+import * as yaml from 'js-yaml'
+import { BuildOptions } from 'esbuild'
 import llms from 'vitepress-plugin-llms'
-import yaml from '@maikolib/vite-plugin-yaml'
+import toSource from 'tosource'
 import unocss from 'unocss/vite'
 import mini from 'unocss/preset-mini'
 import crowdin from './crowdin/index.js'
@@ -11,6 +13,7 @@ import container from './markdown/container.js'
 import fence from './markdown/fence.js'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
+import { readFile } from 'fs/promises'
 
 const require = createRequire(import.meta.url)
 
@@ -201,6 +204,26 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
 
     optimizeDeps: {
       exclude: ['uno.css'],
+      esbuildOptions: {
+        plugins: [
+          {
+            name: 'esbuild:yaml',
+            setup(build) {
+              build.onLoad({ filter: /\.ya?ml$/ }, async (args) => {
+                const code = await readFile(args.path, 'utf8')
+                const yamlData = yaml.load(code, {
+                  filename: args.path,
+                  onWarning: warning => console.warn(warning.toString()),
+                })
+                return {
+                  contents: `const data = ${toSource(yamlData)};\nexport default data;`,
+                  loader: 'js' as const,
+                }
+              })
+            }
+          }
+        ],
+      } satisfies BuildOptions,
     },
 
     server: {
@@ -218,7 +241,22 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
     },
 
     plugins: [
-      yaml(),
+      {
+        name: 'vite:transform-yaml',
+        async transform(code: string, id: string) {
+          if (/\.ya?ml$/.test(id)) {
+            const yamlData = yaml.load(code, {
+              filename: id,
+              onWarning: warning => console.warn(warning.toString()),
+            })
+            return {
+              code: `const data = ${toSource(yamlData)};\nexport default data;`,
+              map: { mappings: "" },
+            }
+          }
+          return null;
+        },
+      },
       unocss({
         presets: [
           mini({
