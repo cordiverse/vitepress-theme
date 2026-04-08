@@ -195,11 +195,9 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
   vite: mergeConfig({
     resolve: {
       dedupe: ['vue'],
-      alias: {
-        '@theme-default': 'vitepress/dist/client/theme-default',
-        '../composables/edit-link': fileURLToPath(new URL('../client/composables/edit-link', import.meta.url)),
-        '../composables/outline': fileURLToPath(new URL('../client/composables/outline', import.meta.url)),
-      },
+      alias: [
+        { find: '@theme-default', replacement: 'vitepress/dist/client/theme-default' },
+      ],
     },
 
     optimizeDeps: {
@@ -241,6 +239,22 @@ export const defineConfig = async (config: Config): Promise<Config> => ({
     },
 
     plugins: [
+      {
+        name: 'vite:override-vitepress-components',
+        enforce: 'pre',
+        resolveId(source: string, importer: string | undefined) {
+          if (!importer?.includes('vitepress/dist/client/theme-default/')) return
+          if (source === './components/VPSidebar.vue' && importer.endsWith('Layout.vue')) {
+            return fileURLToPath(new URL('../client/components/sidebar.vue', import.meta.url))
+          }
+          if (source === '../composables/edit-link') {
+            return fileURLToPath(new URL('../client/composables/edit-link.ts', import.meta.url))
+          }
+          if (source === '../composables/outline') {
+            return fileURLToPath(new URL('../client/composables/outline.ts', import.meta.url))
+          }
+        },
+      },
       {
         name: 'vite:transform-yaml',
         async transform(code: string, id: string) {
